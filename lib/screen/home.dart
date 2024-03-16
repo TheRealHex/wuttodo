@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
         title: Text('Wut Todo?'),
         titleTextStyle: appBarTextStyle(context),
         backgroundColor: Theme.of(context).colorScheme.background,
-        // titleTextStyle: Text(context),
+        scrolledUnderElevation: 0,
         actions: [
           IconButton(
             onPressed: widget.toggleTheme,
@@ -67,6 +67,7 @@ class _HomeState extends State<Home> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: todoList.length,
                   itemBuilder: (context, index) {
                     return _fetchList(context, index);
