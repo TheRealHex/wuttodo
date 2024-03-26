@@ -58,7 +58,7 @@ class About extends StatelessWidget {
               }
             },
             icon: Icon(Icons.link),
-            label: Text('Meet me on Github!'),
+            label: Text('Star me on Github!'),
           ),
         ],
       ),
