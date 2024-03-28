@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/main.dart';
-import 'package:todo_app/style.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../main.dart';
+import '../style.dart';
 
 class About extends StatelessWidget {
   const About({super.key});

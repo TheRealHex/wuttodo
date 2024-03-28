@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:todo_app/style.dart';
 
 import '../constants.dart';
+import '../style.dart';
 
 class Home extends StatefulWidget {
   final VoidCallback toggleTheme;
