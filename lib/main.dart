@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import 'constants.dart';
+import '../data/theme_model.dart';
+import 'data/boxes.dart';
+import 'data/textdata.dart';
 import 'screen/about.dart';
 import 'screen/completed.dart';
 import 'screen/home.dart';
 import 'theme/theme_constants.dart';
 
-void main() {
-  getPaths();
+void main() async {
+  // init hive
+  await Hive.initFlutter();
+
+  // register the adapter
+  Hive.registerAdapter(TextDataAdapter());
+  // Hive.registerAdapter(ThemeDarkAdapter());
+  Hive.registerAdapter(ThemeModelAdapter());
+
+  // open box
+  boxTodo = await Hive.openBox<TextData>('todoBox');
+  boxTheme = await Hive.openBox<ThemeModel>('themeBox');
+
   runApp(const Main());
 }
-
-bool isDark = false;
-ThemeData activeTheme = lightTheme;
 
 class Main extends StatefulWidget {
   const Main({Key? key});
@@ -35,15 +46,16 @@ class _MainState extends State<Main> {
             ),
         '/about': (_) => About(),
       },
-      theme: activeTheme,
+      theme: lightTheme,
       darkTheme: darkTheme,
+      themeMode: ThemeManager.isDarkMode ? ThemeMode.dark : ThemeMode.light,
     );
   }
 
   void toggleTheme() {
     setState(() {
-      isDark = !isDark;
-      activeTheme = isDark ? darkTheme : lightTheme;
+      // update isDark on Hive
+      ThemeManager.toggleTheme(!ThemeManager.isDarkMode);
     });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:WutTodo/data/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,7 +20,7 @@ class About extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: !isDark
+            child: !boxTheme.get(0).isDark
                 ? Image.asset(
                     'assets/image/launcher_icon.png',
                     width: 230,

@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../data/boxes.dart';
+import '../data/textdata.dart';
 import '../style.dart';
 
 class Home extends StatefulWidget {
@@ -14,20 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _textController = TextEditingController();
-  final List<String> todoList = [];
-  final List<String> checkedList = [];
   late String inputValue;
-
-  @override
-  void initState() {
-    super.initState();
-    getPaths();
-    _loadTask();
-  }
-
-  void refreshState() {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +48,13 @@ class _HomeState extends State<Home> {
 
             // Display inserted text and icons to check & delete
             const SizedBox(height: 10),
-            Text(error), // if error on getPath()
+            // Text(error), // if error on getPath()
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: todoList.length,
+                  itemCount: boxTodo.length,
                   itemBuilder: (context, index) {
                     return _fetchList(context, index);
                   },
@@ -109,126 +95,90 @@ class _HomeState extends State<Home> {
           ),
         ),
         IconButton(
-            onPressed: () {
-              _saveTask(todoPath);
-              _loadTask();
-            },
-            icon: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.primary,
-            )),
+          onPressed: () {
+            _saveTask();
+            // _loadTask();
+          },
+          icon: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
       ],
     );
   }
 
-  void _saveTask(String path) {
-    final task = _textController.text;
-
+  void _saveTask() {
+    final RegExp regex = RegExp(r'^\s*$');
     // check if the task isn't empty & not already in todoList for duplicates
-    if (task.isNotEmpty && !todoList.contains(task)) {
-      todoList.add(task);
-      final file = File(path);
-
-      //Read existing content
-      String existingContent = '';
-      if (file.existsSync()) {
-        existingContent = file.readAsStringSync();
-      }
-
-      //Append new todo
-      final updateContent = '$existingContent\n$task';
-
-      // Write the updated content back to file
-      file.writeAsStringSync(updateContent);
-
-      _textController.clear();
-    }
-  }
-
-  void _loadTask() {
-    final file = File(todoPath);
-
-    if (file.existsSync()) {
-      final content = file.readAsStringSync();
+    if (!regex.hasMatch(_textController.text)) {
       setState(() {
-        todoList.clear();
-        todoList.addAll(
-            content.split('\n').where((task) => task.trim().isNotEmpty));
+        boxTodo.put(
+          'key_${_textController.text}',
+          TextData(value: _textController.text, completed: false),
+        );
+        _textController.clear();
       });
-    }
-  }
-
-  void _editTask(int index) {
-    final String inputValue = _textController.text;
-    if (inputValue.isNotEmpty) {
-      todoList[index] = inputValue;
-
-      final file = File(todoPath);
-      file.writeAsStringSync(todoList.join('\n'));
-
-      _textController.clear();
-    }
-  }
-
-  void _completeTask(int index) {
-    String completed = todoList[index];
-    todoList.removeAt(index);
-    checkedList.add(completed);
-
-    // Save into files
-    final todoFile = File(todoPath);
-    todoFile.writeAsStringSync(todoList.join('\n'));
-    final doneFile = File(donePath);
-    doneFile.writeAsStringSync('$completed\n', mode: FileMode.append);
-
-    // Refresh the screen
-    refreshState();
-  }
-
-  void _deleteTask(int index) {
-    if (todoList.isNotEmpty) {
-      todoList.removeAt(index);
-
-      // save the file
-      final file = File(todoPath);
-      file.writeAsStringSync(todoList.join('\n'));
     }
   }
 
   // Display list of the input Todo items
   Row _fetchList(BuildContext context, int index) {
+    TextData data = boxTodo.getAt(index);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Flexible(
-          // width: MediaQuery.of(context).size.width / 1.4,
           child: ListTile(
-              title: Text(todoList[index]),
-              textColor: Theme.of(context).colorScheme.secondary),
+            title: Text(data.value),
+            textColor: Theme.of(context).colorScheme.secondary,
+          ),
         ),
         Row(
           children: [
+            // replace button
             IconButton(
               onPressed: () {
-                _editTask(index);
-                refreshState();
+                final RegExp regex = RegExp(r'^\s*$');
+                setState(() {
+                  if (!regex.hasMatch(_textController.text)) {
+                    boxTodo.putAt(
+                        index,
+                        TextData(
+                          value: _textController.text,
+                          completed: true,
+                        ));
+                    _textController.clear();
+                  }
+                });
               },
               icon: const Icon(Icons.find_replace),
               color: Colors.blueGrey[300],
             ),
+
+            // task-completed button
             IconButton(
               onPressed: () {
-                _completeTask(index);
-                refreshState();
+                // _completeTask(index);
+                setState(() {
+                  // boxTodo.putAt(index, true);
+                  boxTodo.putAt(
+                    index,
+                    TextData(value: _textController.text, completed: true),
+                  );
+                });
               },
               icon: const Icon(Icons.check),
               color: Colors.blue[300],
             ),
+
+            // delete button
             IconButton(
               onPressed: () {
-                _deleteTask(index);
-                refreshState();
+                setState(() {
+                  boxTodo.deleteAt(index);
+                });
               },
               icon: const Icon(Icons.delete),
               color: Colors.red[300],
@@ -242,19 +192,7 @@ class _HomeState extends State<Home> {
   // Button to browse checked list
   FloatingActionButton floatingBtn(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () async {
-        await Navigator.pushNamed(
-          context,
-          '/checked',
-          arguments: {
-            'checkedList': checkedList,
-          },
-        ).then((result) {
-          if (result == true) {
-            _loadTask();
-          }
-        });
-      },
+      onPressed: () => Navigator.pushNamed(context, '/checked'),
       child: Icon(
         Icons.checklist,
         color: Theme.of(context).colorScheme.background,

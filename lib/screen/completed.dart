@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+// import '../constants.dart';
 import '../style.dart';
 
 // ignore: must_be_immutable
@@ -85,19 +85,19 @@ class _CheckedState extends State<Checked> {
           IconButton(
             onPressed: () {
               if (widget.checkedList.isNotEmpty) {
-                String completed = widget.checkedList[index];
-                widget.checkedList.removeAt(index);
+                // String completed = widget.checkedList[index];
+                // widget.checkedList.removeAt(index);
 
                 // Save into files
-                final doneFile = File(donePath);
-                doneFile.writeAsStringSync(widget.checkedList.join('\n'));
+                // final doneFile = File(donePath);
+                // doneFile.writeAsStringSync(widget.checkedList.join('\n'));
 
                 // Append to todo list with a new line
-                final todoFile = File(todoPath);
-                final todoContent =
-                    todoFile.existsSync() ? todoFile.readAsStringSync() : '';
-                final updatedTodoContent = '$todoContent\n$completed';
-                todoFile.writeAsStringSync(updatedTodoContent);
+                // final todoFile = File(todoPath);
+                // final todoContent =
+                // todoFile.existsSync() ? todoFile.readAsStringSync() : '';
+                // final updatedTodoContent = '$todoContent\n$completed';
+                // todoFile.writeAsStringSync(updatedTodoContent);
 
                 setState(() {});
               }
@@ -114,8 +114,8 @@ class _CheckedState extends State<Checked> {
                   widget.checkedList.removeAt(index);
 
                   // save the file
-                  final file = File(donePath);
-                  file.writeAsStringSync(widget.checkedList.join('\n'));
+                  // final file = File(donePath);
+                  // file.writeAsStringSync(widget.checkedList.join('\n'));
                 }
               });
             },
@@ -128,14 +128,14 @@ class _CheckedState extends State<Checked> {
   }
 
   void _loadTask() {
-    final file = File(donePath);
+    // final file = File(donePath);
 
-    if (file.existsSync()) {
-      setState(() {
-        final content = file.readAsStringSync();
-        widget.checkedList.addAll(
-            content.split('\n').where((task) => task.trim().isNotEmpty));
-      });
-    }
+    // if (file.existsSync()) {
+    setState(() {
+      // final content = file.readAsStringSync();
+      // widget.checkedList.addAll(
+      // content.split('\n').where((task) => task.trim().isNotEmpty));
+    });
   }
 }
+// }
