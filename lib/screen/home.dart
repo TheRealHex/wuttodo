@@ -17,53 +17,56 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Wut Todo?'),
-        titleTextStyle: appBarTextStyle(context),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        scrolledUnderElevation: 0,
-        actions: [
-          IconButton(
-            onPressed: widget.toggleTheme,
-            icon: Icon(
-              Icons.dark_mode,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.background),
-        child: Center(
-          child: Column(children: [
-            const SizedBox(height: 30),
-
-            // Text input and insert icon
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _searchadd(),
-            ),
-
-            // Display inserted text and icons to check & delete
-            const SizedBox(height: 10),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: boxTodo.length,
-                  itemBuilder: (context, index) {
-                    return _fetchList(context, index);
-                  },
-                ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Wut Todo?'),
+          titleTextStyle: appBarTextStyle(context),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          scrolledUnderElevation: 0,
+          actions: [
+            IconButton(
+              onPressed: widget.toggleTheme,
+              icon: Icon(
+                Icons.dark_mode,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
-          ]),
+          ],
         ),
+        body: Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.background),
+          child: Center(
+            child: Column(children: [
+              const SizedBox(height: 30),
+
+              // Text input and insert icon
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _searchadd(),
+              ),
+
+              // Display inserted text and icons to check & delete
+              const SizedBox(height: 10),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: boxTodo.length,
+                    itemBuilder: (context, index) {
+                      return _fetchList(context, index);
+                    },
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ),
+        floatingActionButton: floatingBtn(context),
       ),
-      floatingActionButton: floatingBtn(context),
     );
   }
 
