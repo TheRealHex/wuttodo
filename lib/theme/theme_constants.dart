@@ -22,11 +22,7 @@ ThemeData lightTheme = ThemeData(
     primary: Color(0xff464646),
     secondary: Color(0xff343434),
   ),
-  pageTransitionsTheme: PageTransitionsTheme(builders: {
-    TargetPlatform.android: NoAnimationPageTransitionsBuilder(),
-    // TargetPlatform.iOS: NoAnimationPageTransitionsBuilder(),
-    TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
-  }),
+  pageTransitionsTheme: pageTransitionSet(),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -37,12 +33,16 @@ ThemeData darkTheme = ThemeData(
     primary: Color(0xffefefef),
     secondary: Color(0xffdedede),
   ),
-  pageTransitionsTheme: PageTransitionsTheme(builders: {
+  pageTransitionsTheme: pageTransitionSet(),
+);
+
+PageTransitionsTheme pageTransitionSet() {
+  return PageTransitionsTheme(builders: {
     TargetPlatform.android: NoAnimationPageTransitionsBuilder(),
     TargetPlatform.iOS: NoAnimationPageTransitionsBuilder(),
     TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
-  }),
-);
+  });
+}
 
 // No animation in transition
 class NoAnimationPageTransitionsBuilder extends PageTransitionsBuilder {

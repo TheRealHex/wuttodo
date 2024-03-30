@@ -67,8 +67,8 @@ class _CheckedState extends State<Checked> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
-              Icons.cake,
-              color: Colors.amber[400],
+              Icons.celebration,
+              color: Colors.amber[300],
             ),
             Flexible(
               child: ListTile(
