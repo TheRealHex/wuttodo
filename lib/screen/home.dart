@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
             onPressed: widget.toggleTheme,
             icon: Icon(
               Icons.dark_mode,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],
@@ -48,7 +48,6 @@ class _HomeState extends State<Home> {
 
             // Display inserted text and icons to check & delete
             const SizedBox(height: 10),
-            // Text(error), // if error on getPath()
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -97,7 +96,6 @@ class _HomeState extends State<Home> {
         IconButton(
           onPressed: () {
             _saveTask();
-            // _loadTask();
           },
           icon: Icon(
             Icons.add,
@@ -124,69 +122,74 @@ class _HomeState extends State<Home> {
 
   // Display list of the input Todo items
   Row _fetchList(BuildContext context, int index) {
-    TextData data = boxTodo.getAt(index);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Flexible(
-          child: ListTile(
-            title: Text(data.value),
-            textColor: Theme.of(context).colorScheme.secondary,
+    TextData data = boxTodo.getAt(index)!;
+    if (data.completed == false) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            child: ListTile(
+              title: Text(data.value),
+              textColor: Theme.of(context).colorScheme.secondary,
+            ),
           ),
-        ),
-        Row(
-          children: [
-            // replace button
-            IconButton(
-              onPressed: () {
-                final RegExp regex = RegExp(r'^\s*$');
-                setState(() {
-                  if (!regex.hasMatch(_textController.text)) {
+          Row(
+            children: [
+              // replace button
+              IconButton(
+                onPressed: () {
+                  final RegExp regex = RegExp(r'^\s*$');
+                  setState(() {
+                    if (!regex.hasMatch(_textController.text)) {
+                      boxTodo.putAt(
+                          index,
+                          TextData(
+                            value: _textController.text,
+                            completed: true,
+                          ));
+                      _textController.clear();
+                    }
+                  });
+                },
+                icon: const Icon(Icons.find_replace),
+                color: Colors.blueGrey[300],
+              ),
+
+              // task-completed button
+              IconButton(
+                onPressed: () {
+                  setState(() {
                     boxTodo.putAt(
-                        index,
-                        TextData(
-                          value: _textController.text,
-                          completed: true,
-                        ));
-                    _textController.clear();
-                  }
-                });
-              },
-              icon: const Icon(Icons.find_replace),
-              color: Colors.blueGrey[300],
-            ),
+                      index,
+                      TextData(
+                        value: data.value,
+                        completed: true,
+                      ),
+                    );
+                  });
+                },
+                icon: const Icon(Icons.check),
+                color: Colors.blue[300],
+              ),
 
-            // task-completed button
-            IconButton(
-              onPressed: () {
-                // _completeTask(index);
-                setState(() {
-                  // boxTodo.putAt(index, true);
-                  boxTodo.putAt(
-                    index,
-                    TextData(value: _textController.text, completed: true),
-                  );
-                });
-              },
-              icon: const Icon(Icons.check),
-              color: Colors.blue[300],
-            ),
-
-            // delete button
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  boxTodo.deleteAt(index);
-                });
-              },
-              icon: const Icon(Icons.delete),
-              color: Colors.red[300],
-            ),
-          ],
-        )
-      ],
-    );
+              // delete button
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    boxTodo.deleteAt(index);
+                  });
+                },
+                icon: const Icon(Icons.delete),
+                color: Colors.red[300],
+              ),
+            ],
+          )
+        ],
+      );
+    } else {
+      return Row();
+    }
   }
 
   // Button to browse checked list

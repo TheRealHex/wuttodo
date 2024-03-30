@@ -19,12 +19,12 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: appBarTheme,
   colorScheme: ColorScheme.light(
     background: Colors.white,
-    primary: Colors.grey[850]!,
-    secondary: Colors.grey[800]!,
+    primary: Color(0xff464646),
+    secondary: Color(0xff343434),
   ),
   pageTransitionsTheme: PageTransitionsTheme(builders: {
     TargetPlatform.android: NoAnimationPageTransitionsBuilder(),
-    TargetPlatform.iOS: NoAnimationPageTransitionsBuilder(),
+    // TargetPlatform.iOS: NoAnimationPageTransitionsBuilder(),
     TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
   }),
 );
@@ -34,8 +34,8 @@ ThemeData darkTheme = ThemeData(
   appBarTheme: appBarTheme,
   colorScheme: ColorScheme.dark(
     background: Colors.black,
-    primary: Colors.grey[300]!,
-    secondary: Colors.grey[350]!,
+    primary: Color(0xffefefef),
+    secondary: Color(0xffdedede),
   ),
   pageTransitionsTheme: PageTransitionsTheme(builders: {
     TargetPlatform.android: NoAnimationPageTransitionsBuilder(),

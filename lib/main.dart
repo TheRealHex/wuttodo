@@ -40,10 +40,7 @@ class _MainState extends State<Main> {
       initialRoute: '/',
       routes: {
         '/': (_) => Home(toggleTheme: toggleTheme),
-        '/checked': (_) => Checked(
-              checkedList: [],
-              // error: error,
-            ),
+        '/checked': (_) => Checked(),
         '/about': (_) => About(),
       },
       theme: lightTheme,
