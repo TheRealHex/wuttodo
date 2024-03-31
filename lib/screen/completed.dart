@@ -24,7 +24,7 @@ class _CheckedState extends State<Checked> {
               Icons.arrow_back,
               color: Theme.of(context).colorScheme.primary,
             ),
-            onPressed: () => Navigator.popAndPushNamed(context, '/')),
+            onPressed: () => Navigator.pop(context, true)),
         actions: [
           IconButton(
             onPressed: () => {Navigator.pushNamed(context, '/about')},

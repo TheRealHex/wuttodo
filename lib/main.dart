@@ -41,7 +41,7 @@ class _MainState extends State<Main> {
       routes: {
         '/': (_) => Home(toggleTheme: toggleTheme),
         '/checked': (_) => Checked(),
-        '/about': (_) => About(),
+        '/about': (_) => const About(),
       },
       theme: lightTheme,
       darkTheme: darkTheme,
