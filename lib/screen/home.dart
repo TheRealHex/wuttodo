@@ -149,7 +149,7 @@ class _HomeState extends State<Home> {
                           index,
                           TextData(
                             value: _textController.text,
-                            completed: true,
+                            completed: false,
                           ));
                       _textController.clear();
                     }
