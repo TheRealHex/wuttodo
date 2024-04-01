@@ -1,4 +1,4 @@
-package com.example.todo_app
+package com.therealhex.wuttodo
 
 import io.flutter.embedding.android.FlutterActivity
 

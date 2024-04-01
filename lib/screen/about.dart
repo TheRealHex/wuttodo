@@ -43,28 +43,43 @@ class About extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: () async {
-              var url = Uri.https('github.com', '/therealhex/WutTodo.git');
-              if (await canLaunchUrl(url)) {
-                await launchUrl(url);
-              }
-            },
-            icon: Icon(Icons.link),
-            label: Text('Source code'),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: () async {
-              var url = Uri.https('github.com', '/therealhex');
-              if (await canLaunchUrl(url)) {
-                await launchUrl(url);
-              }
-            },
-            icon: Icon(Icons.link),
-            label: Text('Star me on Github!'),
-          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () async {
+                  var url = Uri.https('github.com', '/therealhex/WutTodo.git');
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  }
+                },
+                icon: Icon(
+                  Icons.code,
+                  color: Colors.blue,
+                ),
+                label: Text('Source'),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.background),
+              ),
+              SizedBox(width: 20),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  var url = Uri.https('github.com', '/therealhex');
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  }
+                },
+                icon: Icon(
+                  Icons.cloud,
+                  // color: Colors.black,
+                ),
+                label: Text('Github'),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.background),
+              ),
+            ],
+          )
         ],
       ),
     );
