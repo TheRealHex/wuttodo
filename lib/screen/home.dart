@@ -16,6 +16,13 @@ class _HomeState extends State<Home> {
   late String inputValue;
 
   @override
+  void initState() {
+    // Don't popup keyboard on startup
+    FocusScope.of(context).unfocus();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -99,6 +106,7 @@ class _HomeState extends State<Home> {
         IconButton(
           onPressed: () {
             _saveTask();
+            FocusScope.of(context).unfocus();
           },
           icon: Icon(
             Icons.add,

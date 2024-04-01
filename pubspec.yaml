@@ -1,5 +1,5 @@
 name: WutTodo 
-description: "Another minimal todo App."
+description: "A minimal todo App."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -45,8 +45,6 @@ dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
   build_runner: ^2.4.8
   hive_generator: ^2.0.1
-  # path_provider: ^2.1.2
-  permission_handler: ^11.2.0
 
 flutter_launcher_icons:
   android: "launcher_icon"

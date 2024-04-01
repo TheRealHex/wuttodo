@@ -5,7 +5,7 @@ import '../data/theme_model.dart';
 import 'data/boxes.dart';
 import 'data/textdata.dart';
 import 'screen/about.dart';
-import 'screen/completed.dart';
+import 'screen/checked.dart';
 import 'screen/home.dart';
 import 'theme/theme_constants.dart';
 

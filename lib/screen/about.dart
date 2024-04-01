@@ -1,8 +1,6 @@
-import 'package:WutTodo/data/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../main.dart';
 import '../style.dart';
 
 class About extends StatelessWidget {
