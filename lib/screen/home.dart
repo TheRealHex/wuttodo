@@ -31,6 +31,7 @@ class _HomeState extends State<Home> {
               icon: Icon(
                 Icons.dark_mode,
                 color: Theme.of(context).colorScheme.primary,
+                semanticLabel: 'Toggle Theme',
               ),
             ),
           ],
@@ -104,6 +105,7 @@ class _HomeState extends State<Home> {
           icon: Icon(
             Icons.add,
             color: Theme.of(context).colorScheme.primary,
+            semanticLabel: 'Add todo',
           ),
         ),
       ],
@@ -156,7 +158,10 @@ class _HomeState extends State<Home> {
                     }
                   });
                 },
-                icon: const Icon(Icons.find_replace),
+                icon: const Icon(
+                  Icons.find_replace,
+                  semanticLabel: 'Replace entry',
+                ),
                 color: Colors.blueGrey[300],
               ),
 
@@ -173,7 +178,10 @@ class _HomeState extends State<Home> {
                     );
                   });
                 },
-                icon: const Icon(Icons.check),
+                icon: const Icon(
+                  Icons.check,
+                  semanticLabel: 'Task complete',
+                ),
                 color: Colors.blue[300],
               ),
 
@@ -184,7 +192,10 @@ class _HomeState extends State<Home> {
                     boxTodo.deleteAt(index);
                   });
                 },
-                icon: const Icon(Icons.delete),
+                icon: const Icon(
+                  Icons.delete,
+                  semanticLabel: 'Delete todo',
+                ),
                 color: Colors.red[300],
               ),
             ],

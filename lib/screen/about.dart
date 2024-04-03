@@ -13,6 +13,14 @@ class About extends StatelessWidget {
         title: Text('About'),
         titleTextStyle: appBarTextStyle(context),
         backgroundColor: Theme.of(context).colorScheme.background,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back,
+            semanticLabel: 'Go back',
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -57,6 +65,7 @@ class About extends StatelessWidget {
                 icon: Icon(
                   Icons.code,
                   color: Colors.blue,
+                  semanticLabel: 'Launch source url',
                 ),
                 label: Text('Source'),
                 style: ElevatedButton.styleFrom(
@@ -65,16 +74,17 @@ class About extends StatelessWidget {
               SizedBox(width: 20),
               ElevatedButton.icon(
                 onPressed: () async {
-                  var url = Uri.https('github.com', '/therealhex');
+                  var url = Uri.https('nischal-dhakal.com.np');
                   if (await canLaunchUrl(url)) {
                     await launchUrl(url);
                   }
                 },
                 icon: Icon(
-                  Icons.cloud,
-                  // color: Colors.black,
+                  Icons.link,
+                  color: Colors.deepOrangeAccent,
+                  semanticLabel: 'Launch dev website',
                 ),
-                label: Text('Github'),
+                label: Text('Confer'),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.background),
               ),

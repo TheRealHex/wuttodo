@@ -20,18 +20,20 @@ class _CheckedState extends State<Checked> {
         backgroundColor: Theme.of(context).colorScheme.background,
         titleTextStyle: appBarTextStyle(context),
         leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
-              color: Theme.of(context).colorScheme.primary,
+              semanticLabel: 'Go back',
             ),
+            color: Theme.of(context).colorScheme.primary,
             onPressed: () => Navigator.pop(context)),
         actions: [
           IconButton(
             onPressed: () => {Navigator.pushNamed(context, '/about')},
-            icon: Icon(
+            icon: const Icon(
               Icons.question_mark,
-              color: Theme.of(context).colorScheme.secondary,
+              semanticLabel: 'About',
             ),
+            color: Theme.of(context).colorScheme.primary,
           ),
         ],
       ),
@@ -69,6 +71,7 @@ class _CheckedState extends State<Checked> {
             Icon(
               Icons.celebration,
               color: Colors.amber[300],
+              semanticLabel: 'Completed tasks',
             ),
             Flexible(
               child: ListTile(
@@ -89,7 +92,10 @@ class _CheckedState extends State<Checked> {
                   );
                 });
               },
-              icon: const Icon(Icons.checklist_rtl),
+              icon: const Icon(
+                Icons.checklist_rtl,
+                semanticLabel: 'Uncheck todo',
+              ),
               color: Colors.blue[300],
             ),
             // Delete button
@@ -99,7 +105,10 @@ class _CheckedState extends State<Checked> {
                   boxTodo.deleteAt(boxIndex);
                 });
               },
-              icon: const Icon(Icons.delete),
+              icon: const Icon(
+                Icons.delete,
+                semanticLabel: 'Delete todo',
+              ),
               color: Colors.red[300],
             ),
           ],
