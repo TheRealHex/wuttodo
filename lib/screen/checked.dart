@@ -14,34 +14,37 @@ class Checked extends StatefulWidget {
 class _CheckedState extends State<Checked> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Noice!'),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        titleTextStyle: appBarTextStyle(context),
-        leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              semanticLabel: 'Go back',
+    return Semantics(
+      label: 'Completed Tasks',
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Noice!'),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          titleTextStyle: appBarTextStyle(context),
+          leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                semanticLabel: 'Go back',
+              ),
+              color: Theme.of(context).colorScheme.primary,
+              onPressed: () => Navigator.pop(context)),
+          actions: [
+            IconButton(
+              onPressed: () => {Navigator.pushNamed(context, '/about')},
+              icon: const Icon(
+                Icons.question_mark,
+                semanticLabel: 'About',
+              ),
+              color: Theme.of(context).colorScheme.primary,
             ),
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () => Navigator.pop(context)),
-        actions: [
-          IconButton(
-            onPressed: () => {Navigator.pushNamed(context, '/about')},
-            icon: const Icon(
-              Icons.question_mark,
-              semanticLabel: 'About',
-            ),
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: boxTodo.values.where((data) => data.completed).length,
-        itemBuilder: (context, index) {
-          return _fetchList(index);
-        },
+          ],
+        ),
+        body: ListView.builder(
+          itemCount: boxTodo.values.where((data) => data.completed).length,
+          itemBuilder: (context, index) {
+            return _fetchList(index);
+          },
+        ),
       ),
     );
   }
