@@ -15,7 +15,6 @@ void main() async {
 
   // register the adapter
   Hive.registerAdapter(TextDataAdapter());
-  // Hive.registerAdapter(ThemeDarkAdapter());
   Hive.registerAdapter(ThemeModelAdapter());
 
   // open box

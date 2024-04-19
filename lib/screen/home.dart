@@ -42,33 +42,34 @@ class _HomeState extends State<Home> {
             decoration:
                 BoxDecoration(color: Theme.of(context).colorScheme.background),
             child: Center(
-              child: Column(children: [
-                const SizedBox(height: 30),
-
-                // Text input and insert icon
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _searchadd(),
-                ),
-
-                // Display inserted text and icons to check & delete
-                const SizedBox(height: 10),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: boxTodo.length,
-                      itemBuilder: (context, index) {
-                        return _fetchList(context, index);
-                      },
+              child: Column(
+                children: [
+                  // Display inserted text and icons to check & delete
+                  const SizedBox(height: 10),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: boxTodo.length,
+                        itemBuilder: (context, index) {
+                          return _fetchList(context, index);
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ]),
+
+                  // Text input and insert icon
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _searchadd(),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
-          floatingActionButton: floatingBtn(context),
+          // floatingActionButton: floatingBtn(context),
         ),
       ),
     );
@@ -107,6 +108,14 @@ class _HomeState extends State<Home> {
           },
           icon: Icon(
             Icons.add,
+            color: Theme.of(context).colorScheme.primary,
+            semanticLabel: 'Add todo',
+          ),
+        ),
+        IconButton(
+          onPressed: () => Navigator.pushNamed(context, '/checked'),
+          icon: Icon(
+            Icons.checklist,
             color: Theme.of(context).colorScheme.primary,
             semanticLabel: 'Add todo',
           ),
@@ -202,7 +211,7 @@ class _HomeState extends State<Home> {
                 color: Colors.red[300],
               ),
             ],
-          )
+          ),
         ],
       );
     } else {
@@ -211,13 +220,13 @@ class _HomeState extends State<Home> {
   }
 
   // Button to browse checked list
-  FloatingActionButton floatingBtn(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => Navigator.pushNamed(context, '/checked'),
-      child: Icon(
-        Icons.checklist,
-        color: Theme.of(context).colorScheme.background,
-      ),
-    );
-  }
+  // FloatingActionButton floatingBtn(BuildContext context) {
+  //   return FloatingActionButton(
+  //     onPressed: () => Navigator.pushNamed(context, '/checked'),
+  //     child: Icon(
+  //       Icons.checklist,
+  //       color: Theme.of(context).colorScheme.background,
+  //     ),
+  //   );
+  // }
 }

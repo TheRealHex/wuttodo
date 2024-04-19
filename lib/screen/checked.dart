@@ -19,6 +19,7 @@ class _CheckedState extends State<Checked> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Noice!'),
+          scrolledUnderElevation: 0,
           backgroundColor: Theme.of(context).colorScheme.background,
           titleTextStyle: appBarTextStyle(context),
           leading: IconButton(
