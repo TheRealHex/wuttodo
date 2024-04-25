@@ -58,11 +58,29 @@ class _HomeState extends State<Home> {
                   ),
 
                   // Text input and insert icon
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _searchadd(),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .background, // Container color
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Optional rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.background,
+                          offset: Offset(0, 1.0), // Shadow offset (x, y)
+                          blurRadius: 10.0, // Blur radius of the shadow
+                          spreadRadius:
+                              16.0, // Spread radius to enlarge the shadow (optional)
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, bottom: 10, top: 4),
+                      child: _inputCheckAdd(),
+                    ),
                   ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -73,8 +91,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-// Search bar & add entry
-  Row _searchadd() {
+// To-do input | Checklist | Add Btn
+  Row _inputCheckAdd() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,11 +109,7 @@ class _HomeState extends State<Home> {
                 borderSide:
                     BorderSide(color: Theme.of(context).colorScheme.surface),
               ),
-              labelText: 'Go for a hike!',
-              labelStyle: TextStyle(
-                color: Theme.of(context).colorScheme.surface,
-                fontWeight: FontWeight.bold,
-              ),
+              hintText: 'Go for a hike!',
               counterText: '',
             ),
             maxLength: 100,

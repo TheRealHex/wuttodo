@@ -52,6 +52,7 @@ class _CheckedState extends State<Checked> {
             SizedBox(height: 16),
             Flexible(
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount:
                     boxTodo.values.where((data) => data.completed).length,
                 itemBuilder: (context, index) {
