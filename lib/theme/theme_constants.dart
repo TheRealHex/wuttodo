@@ -20,7 +20,6 @@ ThemeData lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
     background: Colors.white,
     primary: Color(0xff343434),
-    secondary: Color(0xff343434),
     surface: Color(0xff4b4b4b),
     primaryContainer: Color(0xaaefefef),
   ),
@@ -33,7 +32,6 @@ ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
     background: Colors.black,
     primary: Color(0xffefefef),
-    secondary: Color(0xffdedede),
     surface: Color(0xffd4d4d4),
     primaryContainer: Color(0xcc333333),
   ),
