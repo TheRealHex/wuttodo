@@ -1,3 +1,4 @@
+import 'package:WutTodo/widgets/todo_item.dart';
 import 'package:flutter/material.dart';
 
 import '../data/boxes.dart';
@@ -21,12 +22,8 @@ class _CheckedState extends State<Checked> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Congrats!'),
+              const Text('Noice!'),
               const SizedBox(width: 5),
-              Icon(
-                Icons.celebration,
-                color: Colors.amber[300],
-              ),
             ],
           ),
           scrolledUnderElevation: 0,
@@ -68,10 +65,11 @@ class _CheckedState extends State<Checked> {
     );
   }
 
-  Padding _fetchList(int index) {
+  Widget _fetchList(int index) {
     // Find the correct index of the completed item in the boxTodo box
     int completedIndex = 0;
     int boxIndex = 0;
+
     while (completedIndex <= index && boxIndex < boxTodo.length) {
       if (boxTodo.getAt(boxIndex)?.completed ?? false) {
         completedIndex++;
@@ -84,59 +82,43 @@ class _CheckedState extends State<Checked> {
     TextData data = boxTodo.getAt(boxIndex)!;
 
     if (data.completed) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).colorScheme.primaryContainer,
+      return buildTodoItem(
+        context,
+        data,
+        Row(children: [
+          // Uncheck icon
+          IconButton(
+            onPressed: () {
+              setState(() {
+                boxTodo.putAt(
+                  boxIndex,
+                  TextData(value: data.value, completed: false),
+                );
+              });
+            },
+            icon: const Icon(
+              Icons.checklist_rtl,
+              semanticLabel: 'Uncheck todo',
+            ),
+            color: Colors.blue[300],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                child: ListTile(
-                  title: Text(data.value),
-                  textColor: Theme.of(context).colorScheme.surface,
-                  titleTextStyle: contentTextStyle(context),
-                ),
-              ),
-              // Uncheck icon
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    boxTodo.putAt(
-                      boxIndex,
-                      TextData(value: data.value, completed: false),
-                    );
-                  });
-                },
-                icon: const Icon(
-                  Icons.checklist_rtl,
-                  semanticLabel: 'Uncheck todo',
-                ),
-                color: Colors.blue[300],
-              ),
-              // Delete button
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    boxTodo.deleteAt(boxIndex);
-                  });
-                },
-                icon: const Icon(
-                  Icons.delete,
-                  semanticLabel: 'Delete todo',
-                ),
-                color: Colors.red[300],
-              ),
-            ],
+          // Delete button
+          IconButton(
+            onPressed: () {
+              setState(() {
+                boxTodo.deleteAt(boxIndex);
+              });
+            },
+            icon: const Icon(
+              Icons.delete,
+              semanticLabel: 'Delete todo',
+            ),
+            color: Colors.red[300],
           ),
-        ),
+        ]),
       );
     } else {
-      return Padding(padding: EdgeInsets.all(0));
+      return SizedBox();
     }
   }
 }

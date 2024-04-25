@@ -18,7 +18,7 @@ class About extends StatelessWidget {
           icon: Icon(
             Icons.arrow_back,
             semanticLabel: 'Go back',
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surface,
           ),
         ),
       ),
@@ -39,7 +39,7 @@ class About extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.surface,
               ),
             ),
             Padding(
@@ -49,7 +49,7 @@ class About extends StatelessWidget {
                 textAlign: TextAlign.justify,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
               ),
             ),

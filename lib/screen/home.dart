@@ -1,3 +1,4 @@
+import 'package:WutTodo/widgets/todo_item.dart';
 import 'package:flutter/material.dart';
 
 import '../data/boxes.dart';
@@ -80,7 +81,7 @@ class _HomeState extends State<Home> {
       children: [
         Flexible(
           child: TextField(
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            style: contentTextStyle(context),
             controller: _textController,
             cursorColor: Theme.of(context).colorScheme.surface,
             decoration: InputDecoration(
@@ -128,119 +129,88 @@ class _HomeState extends State<Home> {
   }
 
   void _saveTask() {
-    final RegExp regex = RegExp(r'^\s*$');
-    // check if the task isn't empty & not already in todoList for duplicates
-    if (!regex.hasMatch(_textController.text)) {
-      // Replace multiple spaces with a single space
-      final _cleanText = _textController.text.replaceAll(RegExp(r'\s\s+'), ' ');
+    final text =
+        _textController.text.trim(); // Remove leading/trailing whitespaces
+    if (text.isNotEmpty && !boxTodo.containsKey('key_$text')) {
+      // Replace multiple spaces with a single space (optional)
+      final _cleanText = text.replaceAll(RegExp(r'\s\s+'), ' ');
       setState(() {
-        boxTodo.put(
-          'key_${_textController.text}',
-          TextData(value: _cleanText, completed: false),
-        );
+        boxTodo.put('key_$text', TextData(value: _cleanText, completed: false));
         _textController.clear();
       });
     }
   }
 
   // Display list of the input Todo items
-  _fetchList(BuildContext context, int index) {
+  Widget _fetchList(BuildContext context, int index) {
     TextData data = boxTodo.getAt(index)!;
     if (data.completed == false) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                child: ListTile(
-                  title: Text(data.value),
-                  titleTextStyle: contentTextStyle(context),
-                ),
+      return buildTodoItem(
+        context,
+        data,
+        Row(
+          children: [
+            // replace button
+            IconButton(
+              onPressed: () {
+                final RegExp regex = RegExp(r'^\s*$');
+                setState(() {
+                  if (!regex.hasMatch(_textController.text)) {
+                    boxTodo.putAt(
+                        index,
+                        TextData(
+                          value: _textController.text,
+                          completed: false,
+                        ));
+                    _textController.clear();
+                  }
+                });
+              },
+              icon: const Icon(
+                Icons.find_replace,
+                semanticLabel: 'Replace entry',
               ),
-              Row(
-                children: [
-                  // replace button
-                  IconButton(
-                    onPressed: () {
-                      final RegExp regex = RegExp(r'^\s*$');
-                      setState(() {
-                        if (!regex.hasMatch(_textController.text)) {
-                          boxTodo.putAt(
-                              index,
-                              TextData(
-                                value: _textController.text,
-                                completed: false,
-                              ));
-                          _textController.clear();
-                        }
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.find_replace,
-                      semanticLabel: 'Replace entry',
-                    ),
-                    color: Colors.blueGrey[300],
-                  ),
+              color: Colors.blueGrey[300],
+            ),
 
-                  // task-completed button
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        boxTodo.putAt(
-                          index,
-                          TextData(
-                            value: data.value,
-                            completed: true,
-                          ),
-                        );
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.check,
-                      semanticLabel: 'Task complete',
+            // task-completed button
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  boxTodo.putAt(
+                    index,
+                    TextData(
+                      value: data.value,
+                      completed: true,
                     ),
-                    color: Colors.blue[300],
-                  ),
-
-                  // delete button
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        boxTodo.deleteAt(index);
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      semanticLabel: 'Delete todo',
-                    ),
-                    color: Colors.red[300],
-                  ),
-                ],
+                  );
+                });
+              },
+              icon: const Icon(
+                Icons.check,
+                semanticLabel: 'Task complete',
               ),
-            ],
-          ),
+              color: Colors.blue[300],
+            ),
+
+            // delete button
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  boxTodo.deleteAt(index);
+                });
+              },
+              icon: const Icon(
+                Icons.delete,
+                semanticLabel: 'Delete todo',
+              ),
+              color: Colors.red[300],
+            ),
+          ],
         ),
       );
     } else {
-      return Row();
+      return SizedBox();
     }
   }
-
-  // Button to browse checked list
-  // FloatingActionButton floatingBtn(BuildContext context) {
-  //   return FloatingActionButton(
-  //     onPressed: () => Navigator.pushNamed(context, '/checked'),
-  //     child: Icon(
-  //       Icons.checklist,
-  //       color: Theme.of(context).colorScheme.background,
-  //     ),
-  //   );
-  // }
 }
