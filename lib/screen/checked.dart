@@ -18,7 +18,17 @@ class _CheckedState extends State<Checked> {
       label: 'Completed Tasks',
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Noice!'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Congrats!'),
+              const SizedBox(width: 5),
+              Icon(
+                Icons.celebration,
+                color: Colors.amber[300],
+              ),
+            ],
+          ),
           scrolledUnderElevation: 0,
           backgroundColor: Theme.of(context).colorScheme.background,
           titleTextStyle: appBarTextStyle(context),
@@ -27,7 +37,7 @@ class _CheckedState extends State<Checked> {
                 Icons.arrow_back,
                 semanticLabel: 'Go back',
               ),
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.surface,
               onPressed: () => Navigator.pop(context)),
           actions: [
             IconButton(
@@ -36,15 +46,23 @@ class _CheckedState extends State<Checked> {
                 Icons.question_mark,
                 semanticLabel: 'About',
               ),
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.surface,
             ),
           ],
         ),
-        body: ListView.builder(
-          itemCount: boxTodo.values.where((data) => data.completed).length,
-          itemBuilder: (context, index) {
-            return _fetchList(index);
-          },
+        body: Column(
+          children: [
+            SizedBox(height: 16),
+            Flexible(
+              child: ListView.builder(
+                itemCount:
+                    boxTodo.values.where((data) => data.completed).length,
+                itemBuilder: (context, index) {
+                  return _fetchList(index);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -67,55 +85,54 @@ class _CheckedState extends State<Checked> {
 
     if (data.completed) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.celebration,
-              color: Colors.amber[300],
-              semanticLabel: 'Completed tasks',
-            ),
-            Flexible(
-              child: ListTile(
-                title: Text(data.value),
-                titleTextStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Theme.of(context).colorScheme.primaryContainer,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: ListTile(
+                  title: Text(data.value),
+                  textColor: Theme.of(context).colorScheme.surface,
+                  titleTextStyle: contentTextStyle(context),
                 ),
               ),
-            ),
-            // Uncheck icon
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  boxTodo.putAt(
-                    boxIndex,
-                    TextData(value: data.value, completed: false),
-                  );
-                });
-              },
-              icon: const Icon(
-                Icons.checklist_rtl,
-                semanticLabel: 'Uncheck todo',
+              // Uncheck icon
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    boxTodo.putAt(
+                      boxIndex,
+                      TextData(value: data.value, completed: false),
+                    );
+                  });
+                },
+                icon: const Icon(
+                  Icons.checklist_rtl,
+                  semanticLabel: 'Uncheck todo',
+                ),
+                color: Colors.blue[300],
               ),
-              color: Colors.blue[300],
-            ),
-            // Delete button
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  boxTodo.deleteAt(boxIndex);
-                });
-              },
-              icon: const Icon(
-                Icons.delete,
-                semanticLabel: 'Delete todo',
+              // Delete button
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    boxTodo.deleteAt(boxIndex);
+                  });
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  semanticLabel: 'Delete todo',
+                ),
+                color: Colors.red[300],
               ),
-              color: Colors.red[300],
-            ),
-          ],
+            ],
+          ),
         ),
       );
     } else {
