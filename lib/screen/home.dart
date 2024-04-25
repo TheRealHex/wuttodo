@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
                 onPressed: widget.toggleTheme,
                 icon: Icon(
                   Icons.dark_mode,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.surface,
                   semanticLabel: 'Toggle Theme',
                 ),
               ),
@@ -45,17 +45,14 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   // Display inserted text and icons to check & delete
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 16),
                   Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: boxTodo.length,
-                        itemBuilder: (context, index) {
-                          return _fetchList(context, index);
-                        },
-                      ),
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: boxTodo.length,
+                      itemBuilder: (context, index) {
+                        return _fetchList(context, index);
+                      },
                     ),
                   ),
 
@@ -85,20 +82,34 @@ class _HomeState extends State<Home> {
           child: TextField(
             style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             controller: _textController,
-            cursorColor: Theme.of(context).colorScheme.primary,
+            cursorColor: Theme.of(context).colorScheme.surface,
             decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.background)),
+              enabledBorder: InputBorder.none,
+              contentPadding: EdgeInsets.all(10),
               focusedBorder: OutlineInputBorder(
                 borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.primary),
+                    BorderSide(color: Theme.of(context).colorScheme.surface),
               ),
-              hintText: 'Go for a hike!',
+              labelText: 'Go for a hike!',
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.surface,
+                fontWeight: FontWeight.bold,
+              ),
+              counterText: '',
             ),
-            onChanged: (value) {
+            maxLength: 100,
+            scrollPhysics: BouncingScrollPhysics(),
+            onSubmitted: (value) {
               inputValue = value;
             },
+          ),
+        ),
+        IconButton(
+          onPressed: () => Navigator.pushNamed(context, '/checked'),
+          icon: Icon(
+            Icons.checklist,
+            color: Theme.of(context).colorScheme.surface,
+            semanticLabel: 'Completed List',
           ),
         ),
         IconButton(
@@ -108,15 +119,7 @@ class _HomeState extends State<Home> {
           },
           icon: Icon(
             Icons.add,
-            color: Theme.of(context).colorScheme.primary,
-            semanticLabel: 'Add todo',
-          ),
-        ),
-        IconButton(
-          onPressed: () => Navigator.pushNamed(context, '/checked'),
-          icon: Icon(
-            Icons.checklist,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surface,
             semanticLabel: 'Add todo',
           ),
         ),
@@ -128,10 +131,12 @@ class _HomeState extends State<Home> {
     final RegExp regex = RegExp(r'^\s*$');
     // check if the task isn't empty & not already in todoList for duplicates
     if (!regex.hasMatch(_textController.text)) {
+      // Replace multiple spaces with a single space
+      final _cleanText = _textController.text.replaceAll(RegExp(r'\s\s+'), ' ');
       setState(() {
         boxTodo.put(
           'key_${_textController.text}',
-          TextData(value: _textController.text, completed: false),
+          TextData(value: _cleanText, completed: false),
         );
         _textController.clear();
       });
@@ -139,80 +144,89 @@ class _HomeState extends State<Home> {
   }
 
   // Display list of the input Todo items
-  Row _fetchList(BuildContext context, int index) {
+  _fetchList(BuildContext context, int index) {
     TextData data = boxTodo.getAt(index)!;
     if (data.completed == false) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            child: ListTile(
-              title: Text(data.value),
-              textColor: Theme.of(context).colorScheme.secondary,
-            ),
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(20),
           ),
-          Row(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // replace button
-              IconButton(
-                onPressed: () {
-                  final RegExp regex = RegExp(r'^\s*$');
-                  setState(() {
-                    if (!regex.hasMatch(_textController.text)) {
-                      boxTodo.putAt(
+              Flexible(
+                child: ListTile(
+                  title: Text(data.value),
+                  titleTextStyle: contentTextStyle(context),
+                ),
+              ),
+              Row(
+                children: [
+                  // replace button
+                  IconButton(
+                    onPressed: () {
+                      final RegExp regex = RegExp(r'^\s*$');
+                      setState(() {
+                        if (!regex.hasMatch(_textController.text)) {
+                          boxTodo.putAt(
+                              index,
+                              TextData(
+                                value: _textController.text,
+                                completed: false,
+                              ));
+                          _textController.clear();
+                        }
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.find_replace,
+                      semanticLabel: 'Replace entry',
+                    ),
+                    color: Colors.blueGrey[300],
+                  ),
+
+                  // task-completed button
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        boxTodo.putAt(
                           index,
                           TextData(
-                            value: _textController.text,
-                            completed: false,
-                          ));
-                      _textController.clear();
-                    }
-                  });
-                },
-                icon: const Icon(
-                  Icons.find_replace,
-                  semanticLabel: 'Replace entry',
-                ),
-                color: Colors.blueGrey[300],
-              ),
+                            value: data.value,
+                            completed: true,
+                          ),
+                        );
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.check,
+                      semanticLabel: 'Task complete',
+                    ),
+                    color: Colors.blue[300],
+                  ),
 
-              // task-completed button
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    boxTodo.putAt(
-                      index,
-                      TextData(
-                        value: data.value,
-                        completed: true,
-                      ),
-                    );
-                  });
-                },
-                icon: const Icon(
-                  Icons.check,
-                  semanticLabel: 'Task complete',
-                ),
-                color: Colors.blue[300],
-              ),
-
-              // delete button
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    boxTodo.deleteAt(index);
-                  });
-                },
-                icon: const Icon(
-                  Icons.delete,
-                  semanticLabel: 'Delete todo',
-                ),
-                color: Colors.red[300],
+                  // delete button
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        boxTodo.deleteAt(index);
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      semanticLabel: 'Delete todo',
+                    ),
+                    color: Colors.red[300],
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       );
     } else {
       return Row();
