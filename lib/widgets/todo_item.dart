@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '../data/textdata.dart';
 import '../style.dart';
 
-Widget buildTodoItem(BuildContext context, TextData data, Widget content) {
+Widget buildTodoItem(BuildContext context, TextData data, Widget btns) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
     child: Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
@@ -21,9 +20,10 @@ Widget buildTodoItem(BuildContext context, TextData data, Widget content) {
               titleTextStyle: contentTextStyle(context),
             ),
           ),
-          content
+         btns 
         ],
       ),
     ),
   );
 }
+

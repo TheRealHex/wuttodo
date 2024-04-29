@@ -4,10 +4,8 @@ part 'textdata.g.dart';
 
 @HiveType(typeId: 1)
 class TextData {
-  TextData({
-    required this.value,
-    required this.completed,
-  });
+  TextData({required this.value, required this.completed});
+
   @HiveField(0)
   String value;
 

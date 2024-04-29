@@ -23,7 +23,12 @@ class _CheckedState extends State<Checked> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('Noice!'),
-              const SizedBox(width: 5),
+              SizedBox(width: 5),
+              Icon(
+                Icons.check_circle,
+                color: Theme.of(context).colorScheme.surface,
+                size: 22,
+              )
             ],
           ),
           scrolledUnderElevation: 0,
@@ -93,7 +98,10 @@ class _CheckedState extends State<Checked> {
               setState(() {
                 boxTodo.putAt(
                   boxIndex,
-                  TextData(value: data.value, completed: false),
+                  TextData(
+                    value: data.value,
+                    completed: false,
+                  ),
                 );
               });
             },
@@ -106,9 +114,7 @@ class _CheckedState extends State<Checked> {
           // Delete button
           IconButton(
             onPressed: () {
-              setState(() {
-                boxTodo.deleteAt(boxIndex);
-              });
+              setState(() => boxTodo.deleteAt(boxIndex));
             },
             icon: const Icon(
               Icons.delete,

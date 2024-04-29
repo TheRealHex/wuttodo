@@ -1,9 +1,9 @@
-import 'package:WutTodo/widgets/todo_item.dart';
 import 'package:flutter/material.dart';
 
 import '../data/boxes.dart';
 import '../data/textdata.dart';
 import '../style.dart';
+import '../widgets/todo_item.dart';
 
 class Home extends StatefulWidget {
   final VoidCallback toggleTheme;
@@ -18,6 +18,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Semantics(
       label: 'Home',
       child: GestureDetector(
@@ -26,64 +27,56 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
             title: Text('Wut Todo?'),
             titleTextStyle: appBarTextStyle(context),
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: theme.colorScheme.background,
             scrolledUnderElevation: 0,
             actions: [
               IconButton(
                 onPressed: widget.toggleTheme,
                 icon: Icon(
                   Icons.dark_mode,
-                  color: Theme.of(context).colorScheme.surface,
+                  color: theme.colorScheme.surface,
                   semanticLabel: 'Toggle Theme',
                 ),
               ),
             ],
           ),
-          body: Container(
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.background),
-            child: Center(
-              child: Column(
-                children: [
-                  // Display inserted text and icons to check & delete
-                  const SizedBox(height: 16),
-                  Flexible(
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: boxTodo.length,
-                      itemBuilder: (context, index) {
-                        return _fetchList(context, index);
-                      },
-                    ),
-                  ),
-
-                  // Text input and insert icon
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background, // Container color
-                      borderRadius: BorderRadius.circular(
-                          10.0), // Optional rounded corners
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.background,
-                          offset: Offset(0, 1.0), // Shadow offset (x, y)
-                          blurRadius: 10.0, // Blur radius of the shadow
-                          spreadRadius:
-                              16.0, // Spread radius to enlarge the shadow (optional)
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16, right: 16, bottom: 10, top: 4),
-                      child: _inputCheckAdd(),
-                    ),
-                  ),
-                ],
+          body: Column(
+            children: [
+              // Display inserted text and icons to check & delete
+              const SizedBox(height: 16),
+              Flexible(
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: boxTodo.length,
+                  itemBuilder: (context, index) {
+                    return _fetchList(context, index);
+                  },
+                ),
               ),
-            ),
+
+              // Text input and insert icon
+              Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.background, // Container color
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Optional rounded corners
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.background,
+                      offset: Offset(0, 1.0), // Shadow offset (x, y)
+                      blurRadius: 10.0, // Blur radius of the shadow
+                      spreadRadius:
+                          12.0, // Spread radius to enlarge the shadow (optional)
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, bottom: 10, top: 4),
+                  child: _inputCheckAdd(),
+                ),
+              ),
+            ],
           ),
           // floatingActionButton: floatingBtn(context),
         ),
@@ -146,17 +139,24 @@ class _HomeState extends State<Home> {
     final text =
         _textController.text.trim(); // Remove leading/trailing whitespaces
     if (text.isNotEmpty && !boxTodo.containsKey('key_$text')) {
-      // Replace multiple spaces with a single space (optional)
-      final _cleanText = text.replaceAll(RegExp(r'\s\s+'), ' ');
       setState(() {
-        boxTodo.put('key_$text', TextData(value: _cleanText, completed: false));
+        // Replace multiple spaces with a single space (optional)
+        final _cleanText = text.replaceAll(RegExp(r'\s\s+'), ' ');
+        boxTodo.put(
+            'key_$text',
+            TextData(
+              value: _cleanText,
+              completed: false,
+            ));
+
+        // Clear Text Field
         _textController.clear();
       });
     }
   }
 
   // Display list of the input Todo items
-  Widget _fetchList(BuildContext context, int index) {
+  _fetchList(BuildContext context, int index) {
     TextData data = boxTodo.getAt(index)!;
     if (data.completed == false) {
       return buildTodoItem(
@@ -168,8 +168,8 @@ class _HomeState extends State<Home> {
             IconButton(
               onPressed: () {
                 final RegExp regex = RegExp(r'^\s*$');
-                setState(() {
-                  if (!regex.hasMatch(_textController.text)) {
+                if (!regex.hasMatch(_textController.text)) {
+                  setState(() {
                     boxTodo.putAt(
                         index,
                         TextData(
@@ -177,8 +177,8 @@ class _HomeState extends State<Home> {
                           completed: false,
                         ));
                     _textController.clear();
-                  }
-                });
+                  });
+                }
               },
               icon: const Icon(
                 Icons.find_replace,
@@ -210,9 +210,8 @@ class _HomeState extends State<Home> {
             // delete button
             IconButton(
               onPressed: () {
-                setState(() {
-                  boxTodo.deleteAt(index);
-                });
+                boxTodo.deleteAt(index);
+                setState(() {});
               },
               icon: const Icon(
                 Icons.delete,
