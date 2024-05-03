@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/boxes.dart';
 import '../data/textdata.dart';
+import '../function/todo_function.dart';
 import '../style.dart';
 import '../widgets/todo_item.dart';
 
@@ -103,6 +104,7 @@ class _HomeState extends State<Home> {
                     BorderSide(color: Theme.of(context).colorScheme.surface),
               ),
               hintText: 'Go for a hike!',
+              hintStyle: labelTextStyle(context),
               counterText: '',
             ),
             maxLength: 100,
@@ -122,7 +124,10 @@ class _HomeState extends State<Home> {
         ),
         IconButton(
           onPressed: () {
-            _saveTask();
+            // _saveTask();
+            setState(() {
+              TodoFunction().save(_textController);
+            });
             FocusScope.of(context).unfocus();
           },
           icon: Icon(
@@ -135,28 +140,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _saveTask() {
-    final text =
-        _textController.text.trim(); // Remove leading/trailing whitespaces
-    if (text.isNotEmpty && !boxTodo.containsKey('key_$text')) {
-      setState(() {
-        // Replace multiple spaces with a single space (optional)
-        final _cleanText = text.replaceAll(RegExp(r'\s\s+'), ' ');
-        boxTodo.put(
-            'key_$text',
-            TextData(
-              value: _cleanText,
-              completed: false,
-            ));
-
-        // Clear Text Field
-        _textController.clear();
-      });
-    }
-  }
-
   // Display list of the input Todo items
-  _fetchList(BuildContext context, int index) {
+  Widget _fetchList(BuildContext context, int index) {
     TextData data = boxTodo.getAt(index)!;
     if (data.completed == false) {
       return buildTodoItem(
@@ -170,12 +155,7 @@ class _HomeState extends State<Home> {
                 final RegExp regex = RegExp(r'^\s*$');
                 if (!regex.hasMatch(_textController.text)) {
                   setState(() {
-                    boxTodo.putAt(
-                        index,
-                        TextData(
-                          value: _textController.text,
-                          completed: false,
-                        ));
+                    TodoFunction().replace(index, _textController);
                     _textController.clear();
                   });
                 }
@@ -191,13 +171,7 @@ class _HomeState extends State<Home> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  boxTodo.putAt(
-                    index,
-                    TextData(
-                      value: data.value,
-                      completed: true,
-                    ),
-                  );
+                  TodoFunction().check(index, true);
                 });
               },
               icon: const Icon(
@@ -210,8 +184,9 @@ class _HomeState extends State<Home> {
             // delete button
             IconButton(
               onPressed: () {
-                boxTodo.deleteAt(index);
-                setState(() {});
+                setState(() {
+                  TodoFunction().delete(index);
+                });
               },
               icon: const Icon(
                 Icons.delete,

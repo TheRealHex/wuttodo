@@ -28,7 +28,7 @@ TextStyle labelTextStyle(BuildContext context) {
   return TextStyle(
     color: Theme.of(context).colorScheme.surface,
     fontWeight: FontWeight.w600,
-    fontSize: 12,
+    fontSize: 13,
     wordSpacing: 0.7,
     letterSpacing: 0.6,
     fontFamily: 'Montserrat',

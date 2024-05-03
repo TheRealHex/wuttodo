@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../data/boxes.dart';
 import '../data/textdata.dart';
+import '../function/todo_function.dart';
 import '../style.dart';
 
 class Checked extends StatefulWidget {
@@ -94,17 +95,8 @@ class _CheckedState extends State<Checked> {
         Row(children: [
           // Uncheck icon
           IconButton(
-            onPressed: () {
-              setState(() {
-                boxTodo.putAt(
-                  boxIndex,
-                  TextData(
-                    value: data.value,
-                    completed: false,
-                  ),
-                );
-              });
-            },
+            onPressed: () =>
+                setState(() => TodoFunction().check(boxIndex, false)),
             icon: const Icon(
               Icons.checklist_rtl,
               semanticLabel: 'Uncheck todo',
@@ -113,9 +105,7 @@ class _CheckedState extends State<Checked> {
           ),
           // Delete button
           IconButton(
-            onPressed: () {
-              setState(() => boxTodo.deleteAt(boxIndex));
-            },
+            onPressed: () => setState(() => TodoFunction().delete(boxIndex)),
             icon: const Icon(
               Icons.delete,
               semanticLabel: 'Delete todo',
