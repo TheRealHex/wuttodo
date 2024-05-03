@@ -9,11 +9,29 @@ import '../widgets/todo_item.dart';
 class Home extends StatefulWidget {
   final VoidCallback toggleTheme;
   Home({required this.toggleTheme});
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  late List<TextData> allItems = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    allItems = boxTodo.values.toList().cast();
+    // updateAllItem();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Call updateAllItems whenever dependencies change
+    updateAllItems();
+  }
+
   final _textController = TextEditingController();
   late String inputValue;
 
@@ -48,7 +66,7 @@ class _HomeState extends State<Home> {
               Flexible(
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: boxTodo.length,
+                  itemCount: allItems.where((item) => !item.completed).length,
                   itemBuilder: (context, index) {
                     return _fetchList(context, index);
                   },
@@ -125,9 +143,8 @@ class _HomeState extends State<Home> {
         IconButton(
           onPressed: () {
             // _saveTask();
-            setState(() {
-              TodoFunction().save(_textController);
-            });
+            TodoFunction().save(_textController);
+            updateAllItems();
             FocusScope.of(context).unfocus();
           },
           icon: Icon(
@@ -142,63 +159,70 @@ class _HomeState extends State<Home> {
 
   // Display list of the input Todo items
   Widget _fetchList(BuildContext context, int index) {
-    TextData data = boxTodo.getAt(index)!;
-    if (data.completed == false) {
-      return buildTodoItem(
-        context,
-        data,
-        Row(
-          children: [
-            // replace button
-            IconButton(
-              onPressed: () {
-                final RegExp regex = RegExp(r'^\s*$');
-                if (!regex.hasMatch(_textController.text)) {
-                  setState(() {
-                    TodoFunction().replace(index, _textController);
-                    _textController.clear();
-                  });
-                }
-              },
-              icon: const Icon(
-                Icons.find_replace,
-                semanticLabel: 'Replace entry',
-              ),
-              color: Colors.blueGrey[300],
-            ),
+    final List<TextData> remainingItems =
+        allItems.where((item) => !item.completed).toList().cast();
+    remainingItems.sort((b, a) => a.time.compareTo(b.time));
+    final originalIndex = allItems.indexOf(remainingItems[index]);
+    final TextData textData = remainingItems[index];
 
-            // task-completed button
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  TodoFunction().check(index, true);
-                });
-              },
-              icon: const Icon(
-                Icons.check,
-                semanticLabel: 'Task complete',
-              ),
-              color: Colors.blue[300],
+    return buildTodoItem(
+      context,
+      textData,
+      Row(
+        children: [
+          // replace button
+          IconButton(
+            onPressed: () {
+              final RegExp regex = RegExp(r'^\s*$');
+              if (!regex.hasMatch(_textController.text)) {
+                TodoFunction().replace(originalIndex,
+                    _textController); // passing TextData object instead of index
+                _textController.clear();
+                updateAllItems();
+              }
+            },
+            icon: const Icon(
+              Icons.find_replace,
+              semanticLabel: 'Replace entry',
             ),
+            color: Colors.blueGrey[300],
+          ),
 
-            // delete button
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  TodoFunction().delete(index);
-                });
-              },
-              icon: const Icon(
-                Icons.delete,
-                semanticLabel: 'Delete todo',
-              ),
-              color: Colors.red[300],
+          // task-completed button
+          IconButton(
+            onPressed: () {
+              TodoFunction().check(originalIndex,
+                  true); // passing TextData object instead of index
+              updateAllItems();
+            },
+            icon: const Icon(
+              Icons.check,
+              semanticLabel: 'Task complete',
             ),
-          ],
-        ),
-      );
-    } else {
-      return SizedBox();
-    }
+            color: Colors.blue[300],
+          ),
+
+          // delete button
+          IconButton(
+            onPressed: () {
+              TodoFunction().delete(
+                  originalIndex); // passing TextData object instead of index
+              updateAllItems();
+            },
+            icon: const Icon(
+              Icons.delete,
+              semanticLabel: 'Delete todo',
+            ),
+            color: Colors.red[300],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void updateAllItems() {
+    setState(() {
+      allItems = boxTodo.values.toList().cast();
+    });
   }
 }

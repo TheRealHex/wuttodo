@@ -5,44 +5,59 @@ import '../data/textdata.dart';
 
 class TodoFunction {
   void save(TextEditingController textController) {
-    final text =
-        textController.text.trim(); // Remove leading/trailing whitespaces
+    final text = textController.text.trim();
     if (text.isNotEmpty && !boxTodo.containsKey('key_$text')) {
-      // Replace multiple spaces with a single space (optional)
       final _cleanText = text.replaceAll(RegExp(r'\s\s+'), ' ');
       boxTodo.put(
-          'key_$text',
-          TextData(
-            value: _cleanText,
-            completed: false,
-          ));
-      // Clear Text Field
+        'key_$text',
+        TextData(
+          value: _cleanText,
+          completed: false,
+        ),
+      );
       textController.clear();
     }
   }
 
-  // Delete entry
   void delete(int index) {
-    boxTodo.deleteAt(index);
+    final keys = boxTodo.keys.toList();
+    if (index >= 0 && index < keys.length) {
+      boxTodo.delete(keys[index]);
+    }
   }
 
-  // Check / Un-check todo item
   void check(int index, bool value) {
-    boxTodo.putAt(
-        index,
-        TextData(
-          value: boxTodo.getAt(index).value,
-          completed: value,
-        ));
+    final keys = boxTodo.keys.toList();
+    if (index >= 0 && index < keys.length) {
+      final key = keys[index];
+      final textData = boxTodo.get(key);
+      if (textData != null) {
+        boxTodo.put(
+          key,
+          TextData(
+            value: textData.value,
+            completed: value,
+          ),
+        );
+      }
+    }
   }
 
-  // replace todo entry
   void replace(int index, TextEditingController textController) {
-    boxTodo.putAt(
-        index,
-        TextData(
-          value: textController.text,
-          completed: false,
-        ));
+    final keys = boxTodo.keys.toList();
+    if (index >= 0 && index < keys.length) {
+      final key = keys[index];
+      final newText = textController.text.trim();
+      if (newText.isNotEmpty) {
+        boxTodo.put(
+          key,
+          TextData(
+            value: newText,
+            completed: false,
+          ),
+        );
+      }
+    }
   }
 }
+

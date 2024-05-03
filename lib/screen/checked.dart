@@ -14,6 +14,16 @@ class Checked extends StatefulWidget {
 }
 
 class _CheckedState extends State<Checked> {
+  late List<TextData> allItems = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // allItems = boxTodo.values.toList().cast();
+    updateAllItem();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -59,8 +69,7 @@ class _CheckedState extends State<Checked> {
             Flexible(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount:
-                    boxTodo.values.where((data) => data.completed).length,
+                itemCount: allItems.where((data) => data.completed).length,
                 itemBuilder: (context, index) {
                   return _fetchList(index);
                 },
@@ -73,49 +82,47 @@ class _CheckedState extends State<Checked> {
   }
 
   Widget _fetchList(int index) {
-    // Find the correct index of the completed item in the boxTodo box
-    int completedIndex = 0;
-    int boxIndex = 0;
+    final List<TextData> doneItems =
+        allItems.where((item) => item.completed).toList();
+    doneItems.sort((b, a) => a.time.compareTo(b.time));
+    final originalIndex = allItems.indexOf(doneItems[index]);
+    final TextData textData = doneItems[index];
 
-    while (completedIndex <= index && boxIndex < boxTodo.length) {
-      if (boxTodo.getAt(boxIndex)?.completed ?? false) {
-        completedIndex++;
-      }
-      boxIndex++;
-    }
-    boxIndex--;
-
-    // Get the TextData object at the correct index
-    TextData data = boxTodo.getAt(boxIndex)!;
-
-    if (data.completed) {
-      return buildTodoItem(
-        context,
-        data,
-        Row(children: [
-          // Uncheck icon
-          IconButton(
-            onPressed: () =>
-                setState(() => TodoFunction().check(boxIndex, false)),
-            icon: const Icon(
-              Icons.checklist_rtl,
-              semanticLabel: 'Uncheck todo',
-            ),
-            color: Colors.blue[300],
+    return buildTodoItem(
+      context,
+      textData,
+      Row(children: [
+        // Uncheck icon
+        IconButton(
+          onPressed: () {
+            TodoFunction().check(originalIndex, false);
+            updateAllItem();
+          },
+          icon: const Icon(
+            Icons.checklist_rtl,
+            semanticLabel: 'Uncheck todo',
           ),
-          // Delete button
-          IconButton(
-            onPressed: () => setState(() => TodoFunction().delete(boxIndex)),
-            icon: const Icon(
-              Icons.delete,
-              semanticLabel: 'Delete todo',
-            ),
-            color: Colors.red[300],
+          color: Colors.blue[300],
+        ),
+        // Delete button
+        IconButton(
+          onPressed: () {
+            TodoFunction().delete(originalIndex);
+            updateAllItem();
+          },
+          icon: const Icon(
+            Icons.delete,
+            semanticLabel: 'Delete todo',
           ),
-        ]),
-      );
-    } else {
-      return SizedBox();
-    }
+          color: Colors.red[300],
+        ),
+      ]),
+    );
+  }
+
+  void updateAllItem() {
+    setState(() {
+      allItems = boxTodo.values.toList().cast();
+    });
   }
 }

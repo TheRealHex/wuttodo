@@ -19,17 +19,19 @@ class TextDataAdapter extends TypeAdapter<TextData> {
     return TextData(
       value: fields[0] as String,
       completed: fields[1] as bool,
-    );
+    )..time = fields[2] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, TextData obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.value)
       ..writeByte(1)
-      ..write(obj.completed);
+      ..write(obj.completed)
+      ..writeByte(2)
+      ..write(obj.time);
   }
 
   @override

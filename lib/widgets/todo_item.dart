@@ -20,10 +20,9 @@ Widget buildTodoItem(BuildContext context, TextData data, Widget btns) {
               titleTextStyle: contentTextStyle(context),
             ),
           ),
-         btns 
+          btns
         ],
       ),
     ),
   );
 }
-
