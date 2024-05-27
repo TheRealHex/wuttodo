@@ -24,76 +24,81 @@ class About extends StatelessWidget {
       ),
       body: Semantics(
         label: 'About Developer',
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-                child: Image.asset(
-              'assets/image/launcher_icon.png',
-              width: 180,
-              fit: BoxFit.cover,
-            )),
-            SizedBox(height: 14),
-            Text(
-              'WutTodo?',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-                color: Theme.of(context).colorScheme.surface,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "A Minimalistic Todo App !",
-                textAlign: TextAlign.justify,
+        child: Container(
+          color: Theme.of(context).colorScheme.onSurface,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                  child: Image.asset(
+                'assets/image/launcher_icon.png',
+                width: 180,
+                fit: BoxFit.cover,
+              )),
+              SizedBox(height: 14),
+              Text(
+                'WutTodo?',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
                   color: Theme.of(context).colorScheme.surface,
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    var url =
-                        Uri.https('github.com', '/therealhex/WutTodo.git');
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(url);
-                    }
-                  },
-                  icon: Icon(
-                    Icons.code,
-                    color: Colors.blue,
-                    semanticLabel: 'Launch source url',
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "A Minimalistic Todo App !",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
-                  label: Text('Source'),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.onSurface),
                 ),
-                SizedBox(width: 20),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    var url = Uri.https('nischal-dhakal.com.np');
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(url);
-                    }
-                  },
-                  icon: Icon(
-                    Icons.link,
-                    color: Colors.deepOrangeAccent,
-                    semanticLabel: 'Launch dev website',
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      var url =
+                          Uri.https('github.com', '/therealhex/WutTodo.git');
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.code,
+                      color: Colors.blue,
+                      semanticLabel: 'Launch source url',
+                    ),
+                    label: Text('Source'),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onSurface),
                   ),
-                  label: Text('Confer'),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.onSurface),
-                ),
-              ],
-            )
-          ],
+                  SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      var url = Uri.https('nischal-dhakal.com.np');
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.link,
+                      color: Colors.deepOrangeAccent,
+                      semanticLabel: 'Launch dev website',
+                    ),
+                    label: Text('Confer'),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onSurface),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

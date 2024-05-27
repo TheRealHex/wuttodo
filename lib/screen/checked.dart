@@ -1,10 +1,10 @@
-import 'package:WutTodo/widgets/todo_item.dart';
 import 'package:flutter/material.dart';
 
 import '../data/boxes.dart';
 import '../data/textdata.dart';
 import '../function/todo_function.dart';
 import '../style.dart';
+import '../widgets/todo_item.dart';
 
 class Checked extends StatefulWidget {
   Checked({super.key});
@@ -55,19 +55,22 @@ class _CheckedState extends State<Checked> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            SizedBox(height: 16),
-            Flexible(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: allItems.where((data) => data.completed).length,
-                itemBuilder: (context, index) {
-                  return _fetchList(index);
-                },
+        body: Container(
+          color: Theme.of(context).colorScheme.onSurface,
+          child: Column(
+            children: [
+              SizedBox(height: 16),
+              Flexible(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: allItems.where((data) => data.completed).length,
+                  itemBuilder: (context, index) {
+                    return _fetchList(index);
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
