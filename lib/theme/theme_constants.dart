@@ -4,36 +4,28 @@ import 'package:hive/hive.dart';
 import '../data/theme_model.dart';
 import '../style.dart';
 
-class ThemeManager {
-  static Box<ThemeModel> _themeBox = Hive.box<ThemeModel>('themeBox');
-
-  static bool get isDarkMode => _themeBox.get(0)?.isDark ?? false;
-
-  static Future<void> toggleTheme(bool isDark) async {
-    await _themeBox.put(0, ThemeModel(isDark: isDark));
-  }
-}
+ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  appBarTheme: appBarTheme,
+  colorScheme: ColorScheme.dark(
+    onSurface: Colors.black,
+    primary: Color(0xffefefef),
+    surface: Color(0xffd4d4d4),
+    primaryContainer: Color(0xcc333333),
+    secondaryContainer: Color(0xcc232323),
+  ),
+  pageTransitionsTheme: pageTransitionSet(),
+);
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   appBarTheme: appBarTheme,
   colorScheme: ColorScheme.light(
-    background: Colors.white,
+    onSurface: Colors.white,
     primary: Color(0xff343434),
     surface: Color(0xff4b4b4b),
     primaryContainer: Color(0xaaefefef),
-  ),
-  pageTransitionsTheme: pageTransitionSet(),
-);
-
-ThemeData darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  appBarTheme: appBarTheme,
-  colorScheme: ColorScheme.dark(
-    background: Colors.black,
-    primary: Color(0xffefefef),
-    surface: Color(0xffd4d4d4),
-    primaryContainer: Color(0xcc333333),
+    secondaryContainer: Colors.white,
   ),
   pageTransitionsTheme: pageTransitionSet(),
 );
@@ -58,5 +50,15 @@ class NoAnimationPageTransitionsBuilder extends PageTransitionsBuilder {
   ) {
     // No animation, simply return the child
     return child;
+  }
+}
+
+class ThemeManager {
+  static Box<ThemeModel> _themeBox = Hive.box<ThemeModel>('themeBox');
+
+  static bool get isDarkMode => _themeBox.get(0)?.isDark ?? false;
+
+  static Future<void> toggleTheme(bool isDark) async {
+    await _themeBox.put(0, ThemeModel(isDark: isDark));
   }
 }

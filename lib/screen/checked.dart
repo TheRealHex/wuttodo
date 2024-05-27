@@ -17,14 +17,6 @@ class _CheckedState extends State<Checked> {
   late List<TextData> allItems = [];
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // allItems = boxTodo.values.toList().cast();
-    updateAllItem();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Semantics(
       label: 'Completed Tasks',
@@ -43,7 +35,7 @@ class _CheckedState extends State<Checked> {
             ],
           ),
           scrolledUnderElevation: 0,
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.onSurface,
           titleTextStyle: appBarTextStyle(context),
           leading: IconButton(
               icon: const Icon(
@@ -79,6 +71,20 @@ class _CheckedState extends State<Checked> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // allItems = boxTodo.values.toList().cast();
+    updateAllItem();
+  }
+
+  void updateAllItem() {
+    setState(() {
+      allItems = boxTodo.values.toList().cast();
+    });
   }
 
   Widget _fetchList(int index) {
@@ -118,11 +124,5 @@ class _CheckedState extends State<Checked> {
         ),
       ]),
     );
-  }
-
-  void updateAllItem() {
-    setState(() {
-      allItems = boxTodo.values.toList().cast();
-    });
   }
 }

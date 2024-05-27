@@ -12,7 +12,7 @@ class About extends StatelessWidget {
       appBar: AppBar(
         title: Text('About'),
         titleTextStyle: appBarTextStyle(context),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
@@ -72,8 +72,7 @@ class About extends StatelessWidget {
                   ),
                   label: Text('Source'),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.background),
+                      backgroundColor: Theme.of(context).colorScheme.onSurface),
                 ),
                 SizedBox(width: 20),
                 ElevatedButton.icon(
@@ -90,8 +89,7 @@ class About extends StatelessWidget {
                   ),
                   label: Text('Confer'),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.background),
+                      backgroundColor: Theme.of(context).colorScheme.onSurface),
                 ),
               ],
             )
