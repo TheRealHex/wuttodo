@@ -12,7 +12,7 @@ ThemeData darkTheme = ThemeData(
     primary: Color(0xffefefef),
     surface: Color(0xffd4d4d4),
     primaryContainer: Color(0xcc333333),
-    secondaryContainer: Color(0xcc232323),
+    secondaryContainer: Color(0xff232323),
   ),
   pageTransitionsTheme: pageTransitionSet(),
 );
@@ -25,7 +25,8 @@ ThemeData lightTheme = ThemeData(
     primary: Color(0xff343434),
     surface: Color(0xff4b4b4b),
     primaryContainer: Color(0xaaefefef),
-    secondaryContainer: Colors.white,
+    secondaryContainer: Color(0xffefefef),
+    // secondaryContainer: Colors.white,
   ),
   pageTransitionsTheme: pageTransitionSet(),
 );

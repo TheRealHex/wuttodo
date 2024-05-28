@@ -41,7 +41,6 @@ class _HomeState extends State<Home> {
                   Icons.dark_mode,
                   color: theme.colorScheme.surface,
                   semanticLabel: 'Toggle Theme',
-                  size: 24,
                 ),
               ),
             ],
@@ -139,7 +138,6 @@ class _HomeState extends State<Home> {
             icon: const Icon(
               Icons.find_replace,
               semanticLabel: 'Replace entry',
-              size: 20,
             ),
             color: Colors.blueGrey[300],
           ),
@@ -154,7 +152,6 @@ class _HomeState extends State<Home> {
             icon: const Icon(
               Icons.check,
               semanticLabel: 'Task complete',
-              size: 20,
             ),
             color: Colors.blue[300],
           ),
@@ -169,7 +166,6 @@ class _HomeState extends State<Home> {
             icon: const Icon(
               Icons.delete,
               semanticLabel: 'Delete todo',
-              size: 20,
             ),
             color: Colors.red[300],
           ),

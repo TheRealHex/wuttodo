@@ -15,20 +15,25 @@ Widget buildTodoItem(BuildContext context, TextData data, Widget btns) {
             title: Container(
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(6),
                 color: theme.colorScheme.primary,
               ),
               child: Center(
                 child: Text(
                   calculateTimePassed(data.time).toString(),
                   style: TextStyle(
-                      fontSize: 12,
-                      color: theme.colorScheme.onSurface,
-                      fontWeight: FontWeight.bold),
+                    fontSize: 12,
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
             content: Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
               constraints: BoxConstraints(
                   maxWidth: MediaQuery.sizeOf(context).width / 1.6),
               child: Text(
