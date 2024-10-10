@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../style.dart';
+import '../../../../core/constants/style.dart';
 
-class About extends StatelessWidget {
-  const About({super.key});
+class TodoAbout extends StatelessWidget {
+  const TodoAbout({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('About'),
+        title: const Text('About'),
         titleTextStyle: appBarTextStyle(context),
         backgroundColor: Theme.of(context).colorScheme.onSurface,
         leading: IconButton(
@@ -35,7 +35,7 @@ class About extends StatelessWidget {
                 width: 180,
                 fit: BoxFit.cover,
               )),
-              SizedBox(height: 14),
+              const SizedBox(height: 14),
               Text(
                 'WutTodo?',
                 style: TextStyle(
@@ -47,7 +47,7 @@ class About extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  "A Minimalistic Todo App !",
+                  "A minimal TODO app !",
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     fontSize: 14,
@@ -55,7 +55,7 @@ class About extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -67,17 +67,17 @@ class About extends StatelessWidget {
                         await launchUrl(url);
                       }
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.code,
                       color: Colors.blue,
                       semanticLabel: 'Launch source url',
                     ),
-                    label: Text('Source'),
+                    label: const Text('Source'),
                     style: ElevatedButton.styleFrom(
                         backgroundColor:
                             Theme.of(context).colorScheme.onSurface),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   ElevatedButton.icon(
                     onPressed: () async {
                       var url = Uri.https('nischal-dhakal.com.np');
@@ -85,12 +85,12 @@ class About extends StatelessWidget {
                         await launchUrl(url);
                       }
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.link,
                       color: Colors.deepOrangeAccent,
                       semanticLabel: 'Launch dev website',
                     ),
-                    label: Text('Confer'),
+                    label: const Text('Confer'),
                     style: ElevatedButton.styleFrom(
                         backgroundColor:
                             Theme.of(context).colorScheme.onSurface),

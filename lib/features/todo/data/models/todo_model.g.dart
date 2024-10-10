@@ -1,37 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'textdata.dart';
+part of 'todo_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TextDataAdapter extends TypeAdapter<TextData> {
+class TodoModelAdapter extends TypeAdapter<TodoModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
-  TextData read(BinaryReader reader) {
+  TodoModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TextData(
-      value: fields[0] as String,
-      completed: fields[1] as bool,
-    )..time = fields[2] as DateTime;
+    return TodoModel(
+      id: fields[0] as String,
+      text: fields[1] as String,
+      isDone: fields[2] as bool,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, TextData obj) {
+  void write(BinaryWriter writer, TodoModel obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.value)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.completed)
+      ..write(obj.text)
       ..writeByte(2)
-      ..write(obj.time);
+      ..write(obj.isDone);
   }
 
   @override
@@ -40,7 +41,7 @@ class TextDataAdapter extends TypeAdapter<TextData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TextDataAdapter &&
+      other is TodoModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

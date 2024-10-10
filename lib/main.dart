@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
-import '../data/theme_model.dart';
-import 'data/boxes.dart';
-import 'data/textdata.dart';
-import 'screen/about.dart';
-import 'screen/checked.dart';
-import 'screen/home.dart';
+import 'features/todo/data/data_sources/todo_local_source.dart';
+import 'features/todo/data/models/todo_model.dart';
+import 'features/todo/data/repos/todo_repo_impl.dart';
+import 'features/todo/domain/usecases/add_todo.dart';
+import 'features/todo/domain/usecases/checked_todos.dart';
+import 'features/todo/domain/usecases/delete_todo.dart';
+import 'features/todo/domain/usecases/edit_todo.dart';
+import 'features/todo/domain/usecases/get_todos.dart';
+import 'features/todo/presentation/pages/todo_about.dart';
+import 'features/todo/presentation/pages/todo_checked.dart';
+import 'features/todo/presentation/pages/todo_home.dart';
+import 'features/todo/presentation/providers/theme_provider.dart';
+import 'features/todo/presentation/providers/todo_provider.dart';
 import 'theme/theme_constants.dart';
 
 void main() async {
@@ -14,44 +22,55 @@ void main() async {
   await Hive.initFlutter();
 
   // register the adapter
-  Hive.registerAdapter(TextDataAdapter());
-  Hive.registerAdapter(ThemeModelAdapter());
+  Hive.registerAdapter(TodoModelAdapter());
 
   // open box
-  boxTodo = await Hive.openBox<TextData>('todoBox');
-  boxTheme = await Hive.openBox<ThemeModel>('themeBox');
+  await Hive.openBox<TodoModel>('todos');
 
   runApp(const Main());
 }
 
-class Main extends StatefulWidget {
-  const Main({Key? key});
+class Main extends StatelessWidget {
+  const Main({super.key});
 
-  @override
-  State<Main> createState() => _MainState();
-}
-
-class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (_) => Home(toggleTheme: toggleTheme),
-        '/checked': (_) => Checked(),
-        '/about': (_) => const About(),
-      },
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeManager.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-    );
-  }
+    final localSource = TodoLocalSourceImpl();
+    final repo = TodoRepoImpl(localSource);
+    final getTodos = GetTodos(repo);
+    final addTodo = AddTodo(repo);
+    final deleteTodo = DeleteTodo(repo);
+    final editTodo = EditTodo(repo);
+    final checkedTodos = CheckedTodos(repo);
 
-  void toggleTheme() {
-    setState(() {
-      // update isDark on Hive
-      ThemeManager.toggleTheme(!ThemeManager.isDarkMode);
-    });
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(
+          create: (_) => TodoProvider(
+            getTodos: getTodos,
+            checkedTodos: checkedTodos,
+            addTodo: addTodo,
+            deleteTodo: deleteTodo,
+            editTodo: editTodo,
+          )..loadTodos(),
+        )
+      ],
+      child: Builder(
+        builder: (context) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          return MaterialApp(
+            theme: themeProvider.isDarkTheme ? darkTheme : lightTheme,
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            routes: {
+              '/': (_) => const TodoHome(),
+              '/checked': (_) => const TodoChecked(),
+              '/about': (_) => const TodoAbout(),
+            },
+          );
+        },
+      ),
+    );
   }
 }

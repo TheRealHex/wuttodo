@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-AppBarTheme appBarTheme = AppBarTheme(
+AppBarTheme appBarTheme = const AppBarTheme(
   centerTitle: true,
 );
 
@@ -17,10 +17,10 @@ TextStyle contentTextStyle(BuildContext context) {
   return TextStyle(
     color: Theme.of(context).colorScheme.surface,
     fontWeight: FontWeight.w600,
-    fontSize: 13.5,
+    fontSize: 13,
     wordSpacing: 0.5,
     letterSpacing: 0.5,
-    // fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat',
   );
 }
 
