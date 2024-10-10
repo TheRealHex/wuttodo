@@ -1,16 +1,11 @@
-# wuttodo
+# Wut Todo? 
 
-A new Flutter project.
+A minimal TODO application.
 
-## Getting Started
+## What's used to store the data?
+It uses hive (Fast, Enjoyable & Secure NoSQL Database) to store your data locally.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Download now
+<a href="https://play.google.com/store/apps/details?id=com.therealhex.wuttodo">
+    <img src="https://download.logo.wine/logo/Google_Play/Google_Play-Logo.wine.png" height="160"/>
+</a>
