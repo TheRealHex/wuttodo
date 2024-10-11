@@ -1,44 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/entities/todo.dart';
 import '../providers/todo_provider.dart';
 
-Row actionBtns(BuildContext context, Todo todo,
-    TextEditingController? textController, bool isHome) {
-  final todoProvider = Provider.of<TodoProvider>(context);
-
+Row actionBtns(
+  TodoProvider todoProvider,
+  bool isHome,
+  Todo todo,
+  TextEditingController? textController,
+) {
   return Row(
     mainAxisSize: MainAxisSize.min,
-    children: <IconButton>[
-      isHome
-          ? IconButton(
-              onPressed: () => {},
-              icon: const Icon(Icons.done),
-              color: Colors.blue[300],
-              iconSize: 23,
-            )
-          : IconButton(
-              onPressed: () => {},
-              icon: const Icon(Icons.checklist),
-              color: Colors.red[300],
-              iconSize: 23,
-            ),
-      IconButton(
-        onPressed: () {
-          // print(inputText);
-          todoProvider.editTodoItem(todo.id, textController!.text);
-        },
-        icon: const Icon(Icons.find_replace_outlined),
-        color: Colors.blueGrey[300],
-        iconSize: 23,
-      ),
-      IconButton(
-        onPressed: () => todoProvider.removeTodoItem(todo.id),
-        icon: const Icon(Icons.delete),
-        color: Colors.red[300],
-        iconSize: 23,
-      ),
+    children: [
+      // Conditionally render buttons based on isHome
+      if (isHome) ...[
+        _buildEditButton(todoProvider, todo, textController),
+        _buildCheckButton(todoProvider, todo),
+      ] else ...[
+        _buildCheckButton(todoProvider, todo,
+            icon: Icons.checklist, color: Colors.red[300]),
+      ],
+      _buildDeleteButton(todoProvider, todo),
     ],
   );
 }
+
+// Helper method to build the check button
+IconButton _buildCheckButton(TodoProvider todoProvider, Todo todo,
+    {IconData? icon, Color? color}) {
+  return IconButton(
+    onPressed: () => todoProvider.checkToggle(todo.id),
+    icon: Icon(icon ?? Icons.done), // Default to the done icon if none provided
+    color: color ?? Colors.blue[300], // Default color if none provided
+    iconSize: 23,
+  );
+}
+
+// Helper method to build the delete button
+IconButton _buildDeleteButton(TodoProvider todoProvider, Todo todo) {
+  return IconButton(
+    onPressed: () => todoProvider.removeTodoItem(todo.id),
+    icon: const Icon(Icons.delete),
+    color: Colors.red[300],
+    iconSize: 23,
+  );
+}
+
+// Helper method to build the edit button
+IconButton _buildEditButton(TodoProvider todoProvider, Todo todo,
+    TextEditingController? textController) {
+  return IconButton(
+    onPressed: () => todoProvider.editTodoItem(todo.id, textController!.text),
+    icon: const Icon(Icons.find_replace_outlined),
+    color: Colors.blueGrey[300],
+    iconSize: 23,
+  );
+}
+

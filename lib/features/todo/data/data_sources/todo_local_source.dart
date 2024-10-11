@@ -4,9 +4,11 @@ import '../models/todo_model.dart';
 
 abstract class TodoLocalSource {
   Future<void> addTodo(TodoModel todo);
-  Future<List<TodoModel>> checkedTodos();
+  Future<void> checkToggle(String id);
   Future<void> deleteTodo(String id);
   Future<void> editTodo(String id, String newText);
+  Future<TodoModel> getTodoById(String id);
+  Future<List<TodoModel>> fetchChecked();
   Future<List<TodoModel>> getTodos();
 }
 
@@ -19,11 +21,16 @@ class TodoLocalSourceImpl implements TodoLocalSource {
   }
 
   @override
-  Future<List<TodoModel>> checkedTodos() async {
-    return _todoBox.values
-        .where((todo) => todo.isDone)
-        .toList()
-        .cast<TodoModel>();
+  Future<void> checkToggle(String id) async {
+    final index = _todoBox.values.toList().indexWhere((todo) => todo.id == id);
+
+    if (index != -1) {
+      final existingTodo =
+          _todoBox.getAt(index) as TodoModel; // cast to TodoModel
+      final updatedTodo = existingTodo.copyWith(isDone: !existingTodo.isDone);
+
+      await _todoBox.putAt(index, updatedTodo);
+    }
   }
 
   @override
@@ -55,6 +62,19 @@ class TodoLocalSourceImpl implements TodoLocalSource {
         }
       }
     }
+  }
+
+  @override
+  Future<List<TodoModel>> fetchChecked() async {
+    return _todoBox.values
+        .where((todo) => todo.isDone)
+        .toList()
+        .cast<TodoModel>();
+  }
+
+  @override
+  Future<TodoModel> getTodoById(String id) async {
+    return _todoBox.values.firstWhere((todo) => todo.id == id);
   }
 
   @override

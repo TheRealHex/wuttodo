@@ -1,19 +1,12 @@
+import 'package:wuttodo/features/todo/data/models/todo_model.dart';
+
 class Todo {
   final String id, text;
   final bool isDone;
 
   Todo({required this.id, required this.text, this.isDone = false});
 
-  // copy-with method
-  Todo copyWith({
-    String? id,
-    String? text,
-    bool? isDone,
-  }) {
-    return Todo(
-      id: id ?? this.id,
-      text: text ?? this.text,
-      isDone: isDone ?? this.isDone,
-    );
+  TodoModel toModel() {
+    return TodoModel(id: id, text: text, isDone: isDone);
   }
 }

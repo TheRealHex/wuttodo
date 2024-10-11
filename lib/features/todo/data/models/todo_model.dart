@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:wuttodo/features/todo/domain/entities/todo.dart';
 
 part 'todo_model.g.dart';
 
@@ -18,4 +19,20 @@ class TodoModel {
     required this.text,
     this.isDone = false,
   });
+
+  Todo toEntity() {
+    return Todo(
+      id: id,
+      text: text,
+      isDone: isDone,
+    );
+  }
+
+  TodoModel copyWith({String? id, String? text, bool? isDone}) {
+    return TodoModel(
+      id: id ?? this.id,
+      text: text ?? this.text,
+      isDone: isDone ?? this.isDone,
+    );
+  }
 }

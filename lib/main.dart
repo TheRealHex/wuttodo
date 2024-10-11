@@ -6,9 +6,10 @@ import 'features/todo/data/data_sources/todo_local_source.dart';
 import 'features/todo/data/models/todo_model.dart';
 import 'features/todo/data/repos/todo_repo_impl.dart';
 import 'features/todo/domain/usecases/add_todo.dart';
-import 'features/todo/domain/usecases/checked_todos.dart';
+import 'features/todo/domain/usecases/check_toggle.dart';
 import 'features/todo/domain/usecases/delete_todo.dart';
 import 'features/todo/domain/usecases/edit_todo.dart';
+import 'features/todo/domain/usecases/fetch_checked.dart';
 import 'features/todo/domain/usecases/get_todos.dart';
 import 'features/todo/presentation/pages/todo_about.dart';
 import 'features/todo/presentation/pages/todo_checked.dart';
@@ -37,22 +38,18 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     final localSource = TodoLocalSourceImpl();
     final repo = TodoRepoImpl(localSource);
-    final getTodos = GetTodos(repo);
-    final addTodo = AddTodo(repo);
-    final deleteTodo = DeleteTodo(repo);
-    final editTodo = EditTodo(repo);
-    final checkedTodos = CheckedTodos(repo);
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(
           create: (_) => TodoProvider(
-            getTodos: getTodos,
-            checkedTodos: checkedTodos,
-            addTodo: addTodo,
-            deleteTodo: deleteTodo,
-            editTodo: editTodo,
+            getTodos: GetTodos(repo),
+            fetchChecked: FetchChecked(repo),
+            addTodo: AddTodo(repo),
+            deleteTodo: DeleteTodo(repo),
+            editTodo: EditTodo(repo),
+            checkToggle: CheckToggle(repo),
           )..loadTodos(),
         )
       ],

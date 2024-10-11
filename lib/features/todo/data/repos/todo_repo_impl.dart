@@ -13,6 +13,11 @@ class TodoRepoImpl implements TodoRepo {
   }
 
   @override
+  Future<void> checkToggle(String id) async {
+    await localSource.checkToggle(id);
+  }
+
+  @override
   Future<void> deleteTodo(String id) async {
     await localSource.deleteTodo(id);
   }
@@ -36,8 +41,8 @@ class TodoRepoImpl implements TodoRepo {
   }
 
   @override
-  Future<List<Todo>> checkedTodos() async {
-    final todos = await localSource.checkedTodos();
+  Future<List<Todo>> fetchChecked() async {
+    final todos = await localSource.fetchChecked();
     // Convert TodoModel list to Todo list
     return todos
         .map((todoModel) => Todo(
@@ -46,5 +51,10 @@ class TodoRepoImpl implements TodoRepo {
               isDone: todoModel.isDone,
             ))
         .toList();
+  }
+
+  @override
+  Future<Todo> getTodoById(String id) async {
+    return await localSource.getTodoById(id) as Todo;
   }
 }

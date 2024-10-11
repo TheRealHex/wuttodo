@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:wuttodo/features/todo/domain/usecases/checked_todos.dart';
 
 import '../../domain/entities/todo.dart';
 import '../../domain/usecases/add_todo.dart';
+import '../../domain/usecases/check_toggle.dart';
 import '../../domain/usecases/delete_todo.dart';
 import '../../domain/usecases/edit_todo.dart';
+import '../../domain/usecases/fetch_checked.dart';
 import '../../domain/usecases/get_todos.dart';
 
 class TodoProvider with ChangeNotifier {
   final GetTodos getTodos;
-  final CheckedTodos checkedTodos;
+  final FetchChecked fetchChecked;
+  final CheckToggle checkToggle;
   final AddTodo addTodo;
   final DeleteTodo deleteTodo;
   final EditTodo editTodo;
@@ -19,18 +21,30 @@ class TodoProvider with ChangeNotifier {
   List<Todo> _checkedTodos = [];
   bool _isLoading = false;
 
+  final Uuid uuid = const Uuid();
+
   TodoProvider({
     required this.editTodo,
     required this.getTodos,
     required this.addTodo,
     required this.deleteTodo,
-    required this.checkedTodos,
+    required this.fetchChecked,
+    required this.checkToggle,
   });
-
-  bool get isLoading => _isLoading;
   List<Todo> get doneTodos => _checkedTodos;
+  bool get isLoading => _isLoading;
   List<Todo> get todos => _todos;
-  final Uuid uuid = const Uuid();
+
+  Future<void> loadTodos() async {
+    _isLoading = true;
+    notifyListeners();
+
+    _todos = await getTodos(); // fetch todos
+    _checkedTodos = await fetchChecked();
+
+    _isLoading = false;
+    notifyListeners();
+  }
 
   Future<void> addTodoItem(String text) async {
     final newTodo = Todo(
@@ -38,29 +52,23 @@ class TodoProvider with ChangeNotifier {
       text: text,
       isDone: false,
     );
+
     await addTodo(newTodo);
+    await loadTodos();
+  }
+
+  Future<void> checkTodo(String id) async {
+    await checkToggle(id);
     await loadTodos();
   }
 
   Future<void> editTodoItem(String id, String newText) async {
     await editTodo(id, newText);
-    _todos = await getTodos();
-    notifyListeners();
-  }
-
-  Future<void> loadTodos() async {
-    _isLoading = true;
-    notifyListeners();
-    _todos = await getTodos();
-    _checkedTodos = await checkedTodos();
-    _isLoading = false;
-    notifyListeners();
+    await loadTodos();
   }
 
   Future<void> removeTodoItem(String id) async {
     await deleteTodo(id);
     await loadTodos();
   }
-
-  Future<void> checkTodo() async {}
 }
