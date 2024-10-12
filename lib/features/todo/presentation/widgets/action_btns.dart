@@ -14,7 +14,7 @@ Row actionBtns(
     children: [
       // Conditionally render buttons based on isHome
       if (isHome) ...[
-        _buildEditButton(todoProvider, todo, textController),
+        _buildEditButton(todoProvider, todo, textController!),
         _buildCheckButton(todoProvider, todo),
       ] else ...[
         _buildCheckButton(todoProvider, todo,
@@ -48,10 +48,12 @@ IconButton _buildDeleteButton(TodoProvider todoProvider, Todo todo) {
 
 // Helper method to build the edit button
 IconButton _buildEditButton(TodoProvider todoProvider, Todo todo,
-    TextEditingController? textController) {
+    TextEditingController textController) {
   return IconButton(
     onPressed: () {
-      todoProvider.editTodoItem(todo.id, textController!.text);
+      if (textController.text.trim().isNotEmpty) {
+        todoProvider.editTodoItem(todo.id, textController.text);
+      }
       textController.clear();
     },
     icon: const Icon(Icons.find_replace_outlined),
