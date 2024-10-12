@@ -27,9 +27,9 @@ class TodoLocalSourceImpl implements TodoLocalSource {
     if (index != -1) {
       final existingTodo =
           _todoBox.getAt(index) as TodoModel; // cast to TodoModel
-      final updatedTodo = existingTodo.copyWith(isDone: !existingTodo.isDone);
+      existingTodo.isDone = !existingTodo.isDone;
 
-      await _todoBox.putAt(index, updatedTodo);
+      await _todoBox.putAt(index, existingTodo);
     }
   }
 

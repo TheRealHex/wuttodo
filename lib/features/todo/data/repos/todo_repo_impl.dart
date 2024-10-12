@@ -1,7 +1,7 @@
-import 'package:wuttodo/features/todo/data/data_sources/todo_local_source.dart';
-import 'package:wuttodo/features/todo/data/models/todo_model.dart';
-import 'package:wuttodo/features/todo/domain/entities/todo.dart';
-import 'package:wuttodo/features/todo/domain/repos/todo_repo.dart';
+import '../../domain/entities/todo.dart';
+import '../../domain/repos/todo_repo.dart';
+import '../data_sources/todo_local_source.dart';
+import '../models/todo_model.dart';
 
 class TodoRepoImpl implements TodoRepo {
   final TodoLocalSource localSource;
@@ -28,19 +28,6 @@ class TodoRepoImpl implements TodoRepo {
   }
 
   @override
-  Future<List<Todo>> getTodos() async {
-    final todos = await localSource.getTodos();
-    // Convert TodoModel list to Todo list
-    return todos
-        .map((todoModel) => Todo(
-              id: todoModel.id,
-              text: todoModel.text,
-              isDone: todoModel.isDone,
-            ))
-        .toList();
-  }
-
-  @override
   Future<List<Todo>> fetchChecked() async {
     final todos = await localSource.fetchChecked();
     // Convert TodoModel list to Todo list
@@ -56,5 +43,18 @@ class TodoRepoImpl implements TodoRepo {
   @override
   Future<Todo> getTodoById(String id) async {
     return await localSource.getTodoById(id) as Todo;
+  }
+
+  @override
+  Future<List<Todo>> getTodos() async {
+    final todos = await localSource.getTodos();
+    // Convert TodoModel list to Todo list
+    return todos
+        .map((todoModel) => Todo(
+              id: todoModel.id,
+              text: todoModel.text,
+              isDone: todoModel.isDone,
+            ))
+        .toList();
   }
 }
