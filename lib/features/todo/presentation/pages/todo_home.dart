@@ -120,8 +120,7 @@ class TodoHome extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       duration: Duration(seconds: 2),
-                                      content:
-                                          Text('Todo exists or is empty')));
+                                      content: Text('Todo empty or already exists.')));
                             }
                             textController.clear();
                             FocusScope.of(context).unfocus();
