@@ -31,6 +31,7 @@ class TodoProvider with ChangeNotifier {
     required this.fetchChecked,
     required this.checkToggle,
   });
+
   List<Todo> get doneTodos => _checkedTodos;
   bool get isLoading => _isLoading;
   List<Todo> get todos => _todos;

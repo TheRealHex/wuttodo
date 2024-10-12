@@ -11,9 +11,6 @@ class TodoHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final todoProvider = Provider.of<TodoProvider>(context);
-    // final themeProvider = Provider.of<ThemeProvider>(context);
-
     final textController = TextEditingController();
 
     return Consumer2<TodoProvider, ThemeProvider>(
@@ -114,9 +111,17 @@ class TodoHome extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             final inputText = textController.text.trim();
-                            if (inputText.isNotEmpty) {
+                            if (inputText.isNotEmpty &&
+                                !todoProvider.todos
+                                    .any((todo) => todo.text == inputText)) {
                               Provider.of<TodoProvider>(context, listen: false)
                                   .addTodoItem(inputText);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      duration: Duration(seconds: 2),
+                                      content:
+                                          Text('Todo exists or is empty')));
                             }
                             textController.clear();
                             FocusScope.of(context).unfocus();

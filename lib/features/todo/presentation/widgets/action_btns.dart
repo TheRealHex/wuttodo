@@ -29,7 +29,7 @@ Row actionBtns(
 IconButton _buildCheckButton(TodoProvider todoProvider, Todo todo,
     {IconData? icon, Color? color}) {
   return IconButton(
-    onPressed: () => todoProvider.checkToggle(todo.id),
+    onPressed: () => todoProvider.checkTodo(todo.id),
     icon: Icon(icon ?? Icons.done), // Default to the done icon if none provided
     color: color ?? Colors.blue[300], // Default color if none provided
     iconSize: 23,
@@ -50,10 +50,12 @@ IconButton _buildDeleteButton(TodoProvider todoProvider, Todo todo) {
 IconButton _buildEditButton(TodoProvider todoProvider, Todo todo,
     TextEditingController? textController) {
   return IconButton(
-    onPressed: () => todoProvider.editTodoItem(todo.id, textController!.text),
+    onPressed: () {
+      todoProvider.editTodoItem(todo.id, textController!.text);
+      textController.clear();
+    },
     icon: const Icon(Icons.find_replace_outlined),
     color: Colors.blueGrey[300],
     iconSize: 23,
   );
 }
-

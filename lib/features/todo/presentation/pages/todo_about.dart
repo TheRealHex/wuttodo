@@ -31,7 +31,7 @@ class TodoAbout extends StatelessWidget {
             children: [
               Center(
                   child: Image.asset(
-                'assets/image/launcher_icon.png',
+                'assets/icon/icon.png',
                 width: 180,
                 fit: BoxFit.cover,
               )),
