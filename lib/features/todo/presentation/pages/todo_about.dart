@@ -31,7 +31,7 @@ class TodoAbout extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    'assets/icon/ic_launcher.png',
+                    'assets/icon/ic_launcher.webp',
                     width: 180,
                   ),
                 ),
