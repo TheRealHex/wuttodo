@@ -40,27 +40,30 @@ class TodoHome extends StatelessWidget {
             child: Column(
               children: [
                 Flexible(
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: todoProvider.todos.length,
-                        itemBuilder: (context, index) {
-                          final todo = todoProvider.todos[index];
-                          return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 12.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: theme.colorScheme.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(14.0),
-                                ),
-                                child: ListTile(
-                                  title: Text(todo.text),
-                                  titleTextStyle: contentTextStyle(context),
-                                  trailing: actionBtns(
-                                      todoProvider, true, todo, textController),
-                                ),
-                              ));
-                        })),
+                    child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: todoProvider.todos.length,
+                      itemBuilder: (context, index) {
+                        final todo = todoProvider.todos[index];
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 12.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.secondaryContainer,
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              child: ListTile(
+                                title: Text(todo.text),
+                                titleTextStyle: contentTextStyle(context),
+                                trailing: actionBtns(
+                                    todoProvider, true, todo, textController),
+                              ),
+                            ));
+                      }),
+                )),
                 // Text input and insert icon
                 Container(
                   decoration: BoxDecoration(
@@ -85,8 +88,7 @@ class TodoHome extends StatelessWidget {
                               contentPadding: const EdgeInsets.all(10),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
+                                    color: theme.colorScheme.surface),
                               ),
                               hintText: 'Go for a hike!',
                               hintStyle: labelTextStyle(context),
@@ -104,8 +106,8 @@ class TodoHome extends StatelessWidget {
                               Navigator.pushNamed(context, '/checked'),
                           icon: Icon(
                             Icons.checklist,
-                            color: Theme.of(context).colorScheme.surface,
-                            semanticLabel: 'Completed List',
+                            color: theme.colorScheme.surface,
+                            semanticLabel: 'Checked Todos',
                           ),
                         ),
                         IconButton(
@@ -114,20 +116,20 @@ class TodoHome extends StatelessWidget {
                             if (inputText.isNotEmpty &&
                                 !todoProvider.todos
                                     .any((todo) => todo.text == inputText)) {
-                              Provider.of<TodoProvider>(context, listen: false)
-                                  .addTodoItem(inputText);
+                              todoProvider.addTodoItem(inputText);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       duration: Duration(seconds: 2),
-                                      content: Text('Todo empty or already exists.')));
+                                      content: Text(
+                                          'Todo empty or already exists.')));
                             }
                             textController.clear();
                             FocusScope.of(context).unfocus();
                           },
                           icon: Icon(
                             Icons.add,
-                            color: Theme.of(context).colorScheme.surface,
+                            color: theme.colorScheme.surface,
                             semanticLabel: 'Add todo',
                           ),
                         ),
