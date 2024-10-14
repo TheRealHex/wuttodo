@@ -24,7 +24,6 @@ ThemeData lightTheme = ThemeData(
     surface: Color(0xff4b4b4b),
     primaryContainer: Color(0xaaefefef),
     secondaryContainer: Color(0xffefefef),
-    // secondaryContainer: Colors.white,
   ),
   pageTransitionsTheme: pageTransitionSet(),
 );

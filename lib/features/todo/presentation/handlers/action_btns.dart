@@ -4,8 +4,8 @@ import '../../domain/entities/todo.dart';
 import '../providers/todo_provider.dart';
 
 Row actionBtns(
-  TodoProvider todoProvider,
   bool isHome,
+  TodoProvider todoProvider,
   Todo todo,
   TextEditingController? textController,
 ) {
@@ -18,7 +18,7 @@ Row actionBtns(
         _buildCheckButton(todoProvider, todo),
       ] else ...[
         _buildCheckButton(todoProvider, todo,
-            icon: Icons.checklist, color: Colors.red[300]),
+            icon: Icons.checklist, color: Colors.blueGrey[300]),
       ],
       _buildDeleteButton(todoProvider, todo),
     ],

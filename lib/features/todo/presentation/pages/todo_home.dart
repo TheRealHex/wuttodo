@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/style.dart';
+import '../handlers/build_listview.dart';
 import '../providers/theme_provider.dart';
 import '../providers/todo_provider.dart';
-import '../widgets/action_btns.dart';
 
 class TodoHome extends StatelessWidget {
   const TodoHome({super.key});
@@ -39,31 +39,12 @@ class TodoHome extends StatelessWidget {
             color: theme.colorScheme.onSurface,
             child: Column(
               children: [
+                const SizedBox(height: 5),
                 Flexible(
                     child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: todoProvider.todos.length,
-                      itemBuilder: (context, index) {
-                        final todo = todoProvider.todos[index];
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 12.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.secondaryContainer,
-                                borderRadius: BorderRadius.circular(14.0),
-                              ),
-                              child: ListTile(
-                                title: Text(todo.text),
-                                titleTextStyle: contentTextStyle(context),
-                                trailing: actionBtns(
-                                    todoProvider, true, todo, textController),
-                              ),
-                            ));
-                      }),
-                )),
+                        onTap: () => FocusScope.of(context).unfocus(),
+                        child: buildListView(
+                            true, todoProvider, theme, textController))),
                 // Text input and insert icon
                 Container(
                   decoration: BoxDecoration(
@@ -97,7 +78,13 @@ class TodoHome extends StatelessWidget {
                             maxLength: 100,
                             scrollPhysics: const BouncingScrollPhysics(),
                             onSubmitted: (value) {
-                              value;
+                              final inputText = value.trim();
+                              if (inputText.isNotEmpty &&
+                                  !todoProvider.todos
+                                      .any((todo) => todo.text == inputText)) {
+                                todoProvider.addTodoItem(inputText);
+                                textController.clear();
+                              }
                             },
                           ),
                         ),
